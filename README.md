@@ -6,7 +6,7 @@ Next.js frontend
 
 1. Install NodeJS
 2. `cd app`
-3. `npm run dev` 
+3. `npm run dev` to run the app locally on `http://localhost:3000`
 
 Check out the docs:
 -  [Setup Guide](https://nextjs.org/learn/basics/create-nextjs-app/setup).
