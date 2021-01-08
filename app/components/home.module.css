@@ -1,0 +1,19 @@
+.scroll-view {
+    position: absolute;
+    bottom:0;
+    height:80%;
+    overflow-y: scroll;
+    padding:15px;
+    width:100%;
+    left:0;
+}
+
+.complete-button {
+    float:right;
+    text-align: right;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+}
