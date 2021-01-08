@@ -1,5 +1,44 @@
 .canvas {
-  height: 150px;
-  width: 100px;
-  background-color: #eeeeee;
+  height: 650px;
+  width: 300px;
+  background-color: #df1818;
+}
+
+#avatardiv{
+  position: relative;
+  left:0px;
+}
+.avatar{
+  position: relative;
+  float: left;
+  top:0px;
+  left:0px;
+}
+
+#head{
+  position: relative;
+  z-index: 2;
+}
+
+#body{
+  position: relative;
+  z-index:1;
+  left:-12rem;
+}
+#arms{
+  position: relative;
+  z-index:2;
+  left:-6rem;
+}
+#legs{
+  position: relative;
+  z-index:2;
+  left:-18rem;
+}
+
+@media only screen and (max-width:414px){
+  #legs{
+    left:0rem;
+    top:-6rem;
+  }
 }
