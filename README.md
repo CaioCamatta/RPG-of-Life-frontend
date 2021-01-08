@@ -13,6 +13,7 @@ Check out the docs:
 - [Setup Guide](https://nextjs.org/learn/basics/create-nextjs-app/setup).
 - [React](https://reactjs.org/) (Important, we will be mostly working with React. Next.JS is built on top of React)
 - [React Bootstrap](https://react-bootstrap.github.io/layout/grid/)
+- [FontAwesome](https://fontawesome.com/how-to-use/on-the-web/referencing-icons/basic-use)
 
 ## Structure
 

@@ -9,8 +9,8 @@ export default class Avatar extends Component {
 
   render() {
     return (
-      <div className={styles.canvas}>
-        <img src="/vercel.svg" alt="Vercel Logo" className="img-fluid" />
+      <div className="canvas d-flex">
+        <img src="/char.png" alt="Vercel Logo" className="img-fluid h-100 mx-auto" />
       </div>
     );
   }
