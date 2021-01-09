@@ -46,7 +46,7 @@ export default class MainApp extends Component {
       return false;
     });
 
-    let json = response.json();
+    let json = await response.json();
 
     console.log("Login successful? " + (json.message === "success").toString());
 
