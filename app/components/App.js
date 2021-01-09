@@ -33,6 +33,31 @@ export default class MainApp extends Component {
     this.setState({ pageToShow: page });
   };
 
+  authenticate = (username, password) => {
+    /* Returns "true" if successfully authenticated, "false" otherwise. 
+    Logs an error the call returns an error. */
+    fetch("https://rpg-of-life-api.herokuapp.com/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username, password: password }),
+      mode: "cors",
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          // To whom it may concern, we know this is not secure authentication
+          console.log(
+            "Login successful? " + (result.message === "success").toString()
+          );
+          return result.message === "success";
+        },
+        (error) => {
+          console.log("Authentication error: ", error);
+          return false;
+        }
+      );
+  };
+
   render() {
     switch (this.state.pageToShow) {
       case AUTHENTICATION:
@@ -58,5 +83,6 @@ export default class MainApp extends Component {
   commonProps = {
     navigateHome: this.navigateHome,
     navigate: this.navigate,
+    authenticate: this.authenticate,
   };
 }
