@@ -1,4 +1,15 @@
 .canvas {
-  height: 120px;
-  width: 80px;
+  height: 650px;
+  width: 300px;
+  background-color: #df1818;
+}
+
+#avatardiv{
+  position: relative;
+  left:0px;
+}
+
+#avatarcanvas{
+  border-style:solid;
+  background-color: #818df3;
 }
