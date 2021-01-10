@@ -7,6 +7,13 @@ export default class ChallengeModal extends Component {
     super(props);
   }
 
+  handleChallengeAndClose = () => {
+    console.log("challenging and closing");
+    this.props.handleChallenge();
+    this.props.handleClose();
+    console.log("done");
+  }
+
   render() {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
@@ -23,7 +30,7 @@ export default class ChallengeModal extends Component {
           <Button variant="secondary" onClick={this.props.handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={this.props.handleChallenge}>
+          <Button variant="primary" onClick={this.handleChallengeAndClose}>
             Challenge!
           </Button>
         </Modal.Footer>
