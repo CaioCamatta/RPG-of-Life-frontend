@@ -105,7 +105,7 @@ export default class Profile extends Component {
               Back
             </Button>
             <h1>{this.props.globalUsername}</h1>
-            <Avatar />
+            <Avatar helm="" chest="" pants = ""  boots = "" weapon = ""/>
             <p>Coins: {this.state.coins}</p>
             <p>XP: {this.state.xp}</p>
             <p>Health: {this.state.health}</p>
