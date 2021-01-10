@@ -23,7 +23,7 @@ export default class ChallengeModal extends Component {
           <Button variant="secondary" onClick={this.props.handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={this.props.handleClose}>
+          <Button variant="primary" onClick={this.props.handleChallenge}>
             Challenge!
           </Button>
         </Modal.Footer>
