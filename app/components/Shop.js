@@ -67,6 +67,7 @@ export default class Shop extends Component {
   componentDidMount() {
     this.fetchShopItems();
     this.fetchItemsOwned();
+    this.fetchItemsEquipped();
   }
 
   // In a parallel universe, where we have actual pages for shop, friends, etc,
@@ -95,8 +96,6 @@ export default class Shop extends Component {
     }
   };
 
-  // In a parallel universe, where we have actual pages for shop, friends, etc,
-  //  this function would be called from getStaticProps() to allow static generation
   fetchItemsOwned = async () => {
     try {
       let response = await fetch(
@@ -128,6 +127,39 @@ export default class Shop extends Component {
     }
   };
 
+  // In a parallel universe, where we have actual pages for shop, friends, etc,
+  //  this function would be called from getStaticProps() to allow static generation
+  fetchItemsEquipped = async () => {
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getItemsEquipped/" +
+          this.props.globalUsername,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let json = await response.json();
+
+      console.log("Fetched " + Object.keys(json).length + " items equipped.");
+
+      let items = Object.values(json);
+
+      var itemNames = [];
+      items.forEach((element) => itemNames.push(element?.name));
+
+      console.log("items equipped: ", itemNames);
+
+      this.setState({
+        itemsEquipped: itemNames,
+      });
+    } catch (error) {
+      console.log("fetchItemsOwned error: ", error);
+    }
+  };
+
   onClickToPurchase = async () => {
     try {
       let response = await fetch(
@@ -151,6 +183,7 @@ export default class Shop extends Component {
         console.log("Purchased " + this.state.itemToPurchase.name);
 
         this.togglePurchaseConfirmationModel();
+        this.fetchItemsOwned();
       }
     } catch (error) {
       console.log("onClickToPurchase error: ", error);
@@ -179,6 +212,7 @@ export default class Shop extends Component {
 
       if (success) {
         console.log("Equipped " + itemName);
+        this.fetchItemsEquipped();
       }
     } catch (error) {
       console.log("onClickToEquip error: ", error);
