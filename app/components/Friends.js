@@ -3,13 +3,9 @@ import { Container, Row, Col, Button, ListGroup } from "react-bootstrap";
 import styles from "./friends.module.css";
 import ChallengeModal from "./ChallengeModal.js";
 
-var friends = [
-  "Person1",
-  "Person2",
-  "Person3"
-]
+var friends = ["Person1", "Person2", "Person3"];
 
-var friendsList = [];  
+var friendsList = [];
 
 export default class Friends extends Component {
   constructor(props) {
@@ -17,22 +13,55 @@ export default class Friends extends Component {
 
     this.state = {
       showChallengeModal: false,
+      friendsList: [{"friend": "Loading...", "state": "challenge"}]
     };
+  }
 
-    friendsList = [];
+  componentDidMount() {
+    this.populateFriends()
+  }
 
-    for (let i = 0; i < friends.length; i++) {
-      friendsList.push({
-        name: friends[i],
-        challenge_state: 0
-      });
+  populateFriends = async () => {
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getFriends/"+this.props.globalUsername,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let friends = await response.json();
+      console.log("friends is:", friends)
+      friendsList = [];
+      for (let i = 0; i < Object.keys(friends).length; i++) {
+        friendsList.push({
+          friend: friends[i]['friend'],
+          state: friends[i]['state'],
+        });
+      }
+      if(friendsList.length != 0){
+        this.setState({friendsList: friendsList})
+      }
+      
+    } catch (error) {
+      console.log("Error: ", error);
+      return false;
     }
-
-    this.state = { friendsList };
   }
 
   handleChallengeModalToggle = (name) => {
-    this.setState({ showChallengeModal: !this.state.showChallengeModal, selectedFriend: name });
+    this.setState({
+      showChallengeModal: !this.state.showChallengeModal,
+      selectedFriend: name,
+    });
+  };
+
+  challengeFriend = async (name) => {
+    //needs to create challenge between two players - fetch to the backend to create a challenge
+    //have the challenge available to accept on the other end - in component didMount do a check to see what friends have challenges to accept
+    //once accepted have both sides be able to view it - in componentDidMount also
   };
 
   render() {
@@ -45,12 +74,14 @@ export default class Friends extends Component {
             </Button>
             <h1>Friends</h1>
             <ListGroup>
-              {this.state.friendsList.map((friend, index) => (
+              {this.state.friendsList.map((friend, state) => (
                 <ListGroup.Item className="friend-card">
-                  <p>
-                    { friend.name }
-                  </p>
-                  <Button variant="primary" onClick={() => this.handleChallengeModalToggle(friend.name)}>
+                  <p>{friend.friend}</p>
+                  <p>{friend.state}</p>
+                  <Button
+                    variant="primary"
+                    onClick={() => this.handleChallengeModalToggle(friend.name)}
+                  >
                     Challenge
                   </Button>
                 </ListGroup.Item>
@@ -61,6 +92,9 @@ export default class Friends extends Component {
             show={this.state.showChallengeModal}
             handleClose={() => this.handleChallengeModalToggle(null)}
             friend={this.state.selectedFriend}
+            handleChallenge={() =>
+              this.challengeFriend(this.state.selectedFriend)
+            }
           />
         </Row>
       </Container>
