@@ -58,6 +58,7 @@ class Avatar extends Component {
       ctx.drawImage(sword, 55.5, 36, 32, 32);
     };
   }
+  
   //Body
   displayHead(ctx) {
     var headimage = new Image();
