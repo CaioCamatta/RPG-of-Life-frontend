@@ -90,7 +90,11 @@ export default class Friends extends Component {
       }
     }
     else if(state == "view"){
-      alert("YOU ARE VIEWING YOUR CHALLENGE")
+      this.setState({
+        showChallengeModal: !this.state.showChallengeModal,
+        selectedFriend: name,
+        selectedFriendChallengeState: "view"
+      });
     }
     else if(state == "pending"){
       alert("Please wait until your friend accepts your challenge!")
@@ -189,6 +193,8 @@ export default class Friends extends Component {
             show={this.state.showChallengeModal}
             handleClose={() => this.handleChallengeModalToggle(this.state.selectedFriendChallengeState, null)}
             friend={this.state.selectedFriend}
+            username={this.props.globalUsername}
+            state={this.state.selectedFriendChallengeState}
             handleChallenge={() =>
               this.challengeFriend(this.state.selectedFriend)
             }
