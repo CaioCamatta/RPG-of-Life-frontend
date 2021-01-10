@@ -74,7 +74,7 @@ export default class Friends extends Component {
             </Button>
             <h1>Friends</h1>
             <ListGroup>
-              {this.state.friendsList.map((friend, state) => (
+              {this.state.friendsList.map((friend) => (
                 <ListGroup.Item className="friend-card">
                   <p>{friend.friend}</p>
                   <p>{friend.state}</p>

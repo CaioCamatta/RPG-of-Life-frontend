@@ -104,7 +104,7 @@ export default class Profile extends Component {
             <Button variant="link" onClick={() => this.props.navigateHome()}>
               Back
             </Button>
-            <h1>this.props.globalUsername</h1>
+            <h1>{this.props.globalUsername}</h1>
             <Avatar />
             <p>Coins: {this.state.coins}</p>
             <p>XP: {this.state.xp}</p>
