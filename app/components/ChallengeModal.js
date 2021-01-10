@@ -11,15 +11,20 @@ export default class ChallengeModal extends Component {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Challenge { this.props.friend }</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          Challenging a friend will allow you to compete directly on your five statistics.
+          The challenge will last for a week and both you and your opponent's progresses will be tracked and compared.
+          Whoever finishes the week having gained more stat points wins!
+          Challenges begin immediately when accepted by the invitee.
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={this.props.handleClose}>
-            Close
+            Cancel
           </Button>
-          <Button variant="primary" onClick={this.props.handleClose}>
-            Save (just closes)
+          <Button variant="primary" onClick={this.props.handleChallenge}>
+            Challenge!
           </Button>
         </Modal.Footer>
       </Modal>

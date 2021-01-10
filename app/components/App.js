@@ -33,10 +33,49 @@ export default class MainApp extends Component {
     this.setState({ pageToShow: page });
   };
 
+  setGlobalUsername = (globalUsername) => {
+    // Sets global username to be used by children and navitages to home page
+    this.commonProps.globalUsername = globalUsername;
+    this.setState({ globalUsername }, this.navigateHome);
+  };
+
+  authenticate = async (username, password) => {
+    /* Returns "true" if successfully authenticated, "false" otherwise. 
+    Logs an error the call returns an error. */
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: username, password: password }),
+          mode: "cors",
+        }
+      );
+
+      let json = await response.json();
+
+      console.log(
+        "Login successful? " + (json.message === "success").toString()
+      );
+
+      // To whom it may concern, we know this is not secure authentication
+      return json.message === "success";
+    } catch (error) {
+      console.log("Authentication error: ", error);
+      return false;
+    }
+  };
+
   render() {
     switch (this.state.pageToShow) {
       case AUTHENTICATION:
-        return <Authentication {...this.commonProps} />;
+        return (
+          <Authentication
+            {...this.commonProps}
+            setGlobalUsername={this.setGlobalUsername}
+          />
+        );
 
       case HOME:
         return <Home {...this.commonProps} />;
@@ -58,5 +97,6 @@ export default class MainApp extends Component {
   commonProps = {
     navigateHome: this.navigateHome,
     navigate: this.navigate,
+    authenticate: this.authenticate,
   };
 }
