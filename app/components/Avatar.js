@@ -2,12 +2,6 @@ import { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 import styles from "./avatar.module.css";
 
-import Canvas from './Canvas'
-import slicer from './slicer'
-
-
-
-
 class Avatar extends Component {
   constructor(props) {
     super(props);
@@ -17,21 +11,21 @@ class Avatar extends Component {
 
   displayHelmet(ctx, helm){
     var helmet = new Image()
-    helmet.src = "/darkhelmet.png"
+    helmet.src = helm
     helmet.onload = () => {
       ctx.drawImage(helmet,20,17,54,38);
     }
   }
   displayChest(ctx, body){
     var chest = new Image()
-    chest.src = "/darkchest.png"
+    chest.src = body
     chest.onload = () => {
-      ctx.drawImage(chest,20,38,52,38);
+      ctx.drawImage(chest,20,37,52,38);
     }
   }
   displayPants(ctx, legs){
     var pants = new Image()
-    pants.src = "/underwear.png"
+    pants.src = legs
     pants.onload = () => {
       ctx.drawImage(pants,32,56,30,30)
     }
@@ -39,31 +33,32 @@ class Avatar extends Component {
   displayBoots(ctx, feet){
 
     var boots = new Image()
-    boots.src = "/steeltoeboots.png"
+    boots.src = feet
     boots.onload = () => {
-      ctx.drawImage(boots,32,62,28,33)
+      ctx.drawImage(boots,33,70,28,20)
     }
   }
-  displayWeapons(ctx){
+  displayWeapons(ctx,weapon){
     var sword = new Image()
-    sword.src = "/trainingsword.png"
+    sword.src = weapon
     sword.onload = () => {
       ctx.drawImage(sword,55.5,36,32,32)
     }
   }
   displayShield(){
-
   }
 
   componentDidMount(){
     // initailizes canvas reference
     const canvas = this.refs.canvas
     const ctx = canvas.getContext("2d")
-    
 
-    var gear = [101,129,132,138,146]
-    // booleans
-    var boots = true
+    //ids sent into corresponding display functions
+    var bootid = this.props.boots
+    var pantid = this.props.pants
+    var chestid = this.props.chest
+    var headid = this.props.helm
+    var weaponid = this.props.weapon
 
     //basic body format, no items
     var headimage = new Image()
@@ -78,21 +73,32 @@ class Avatar extends Component {
       ctx.drawImage(bodyimage,0,0)
       
     }
-    if (!boots){
-      var legimage = new Image()
-      legimage.src = "/legs.png"
-      legimage.onload = () => {
-        ctx.drawImage(legimage,0,0)
-      }
+    var pants = new Image()
+    pants.src = "/underwear.png"
+    pants.onload = () => {
+      ctx.drawImage(pants,32,56,30,30)
     }
-    var bootid = 146
-    var pantid = 138
-    var chestid = 132
-    var headid = 129
-    var weaponid = 101
+    
+    var legimage = new Image()
+    legimage.src = "/legs.png"
+    legimage.onload = () => {
+      ctx.drawImage(legimage,0,12)
+    }
+    
+
+    /*Armour section*/
+    //first boots, then pants, the chest, then head, then helmet, then arms, then weapon
     this.displayBoots(ctx, bootid)
     this.displayPants(ctx, pantid)
     this.displayChest(ctx, chestid)
+
+    var headimage = new Image()
+    headimage.src = "/head.png"
+    headimage.onload = () => {
+      ctx.drawImage(headimage,0,0)
+      
+    }
+
     this.displayHelmet(ctx, headid)
 
 
@@ -101,7 +107,6 @@ class Avatar extends Component {
     var armimage = new Image()
     armimage.src = "/arms.png"
     armimage.onload = () => {
-      //ctx.drawImage(armimage,-22,-22,140,140)
       ctx.drawImage(armimage,0,0)
     }
 
@@ -110,15 +115,13 @@ class Avatar extends Component {
 
   }
 
-
   render() {
     return (
  
       <div id="avatardiv" className={styles.canvas}>
-        <canvas ref="canvas" width={640} height={425} />
-        
-
+        <canvas ref="canvas" id = "avatarcanvas" width={95} height={115} />
       </div>
+
     );
 
   }
