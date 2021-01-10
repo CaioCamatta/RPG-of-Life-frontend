@@ -9,113 +9,120 @@ class Avatar extends Component {
   }
 
 
-  displayHelmet(ctx, helm){
+  displayHelmet(ctx){
     var helmet = new Image()
-    helmet.src = helm
+    helmet.src = this.props.helm
+    if(this.props.helm == null || this.props.helm == ""){
+      this.displayArms(ctx)
+    }
     helmet.onload = () => {
       ctx.drawImage(helmet,20,17,54,38);
+      this.displayArms(ctx);
     }
   }
-  displayChest(ctx, body){
+  displayChest(ctx){
     var chest = new Image()
-    chest.src = body
+    chest.src = this.props.chest
+    if(this.props.chest == null || this.props.chest == ""){
+      this.displayHead(ctx)
+    }
     chest.onload = () => {
-      ctx.drawImage(chest,20,37,52,38);
+      ctx.drawImage(chest,25.5,37,45,38);
+      this.displayHead(ctx)
     }
   }
-  displayPants(ctx, legs){
+  displayPants(ctx){
     var pants = new Image()
-    pants.src = legs
+    pants.src = this.props.pants;
+    if(this.props.pants == null || this.props.pants == ""){
+      this.displayChest(ctx)
+    }
     pants.onload = () => {
-      ctx.drawImage(pants,32,56,30,30)
+      ctx.drawImage(pants,30.5,56,32,30)
+      this.displayChest(ctx)
     }
   }
-  displayBoots(ctx, feet){
+  displayBoots(ctx){
 
     var boots = new Image()
-    boots.src = feet
+    boots.src = this.props.boots
+    if(this.props.boots == null || this.props.boots == ""){
+      this.displayPants(ctx)
+    }
     boots.onload = () => {
       ctx.drawImage(boots,33,70,28,20)
+      this.displayPants(ctx)
     }
   }
-  displayWeapons(ctx,weapon){
+  displayWeapons(ctx){
     var sword = new Image()
-    sword.src = weapon
+    sword.src = this.props.weapon
     sword.onload = () => {
       ctx.drawImage(sword,55.5,36,32,32)
     }
   }
-  displayShield(){
-  }
-
-  componentDidMount(){
-    // initailizes canvas reference
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
-
-    //ids sent into corresponding display functions
-    var bootid = this.props.boots
-    var pantid = this.props.pants
-    var chestid = this.props.chest
-    var headid = this.props.helm
-    var weaponid = this.props.weapon
-
-    //basic body format, no items
+  //Body
+  displayHead(ctx){
     var headimage = new Image()
     headimage.src = "/head.png"
     headimage.onload = () => {
       ctx.drawImage(headimage,0,0)
-      
+      this.displayHelmet(ctx)
     }
+  }
+  displayBod(ctx){
     var bodyimage = new Image()
     bodyimage.src = "/body.png"
     bodyimage.onload = () => {
       ctx.drawImage(bodyimage,0,0)
-      
+      this.displayLegs(ctx);
     }
+  }
+  displayLegs(ctx){
     var pants = new Image()
     pants.src = "/underwear.png"
     pants.onload = () => {
       ctx.drawImage(pants,32,56,30,30)
+      this.displayBoots(ctx);
     }
-    
+  }
+  displayFeet(ctx){
     var legimage = new Image()
     legimage.src = "/legs.png"
     legimage.onload = () => {
       ctx.drawImage(legimage,0,12)
+      this.displayBod(ctx);
     }
-    
-
-    /*Armour section*/
-    //first boots, then pants, the chest, then head, then helmet, then arms, then weapon
-    this.displayBoots(ctx, bootid)
-    this.displayPants(ctx, pantid)
-    this.displayChest(ctx, chestid)
-
-    var headimage = new Image()
-    headimage.src = "/head.png"
-    headimage.onload = () => {
-      ctx.drawImage(headimage,0,0)
-      
-    }
-
-    this.displayHelmet(ctx, headid)
-
-
-
-    //arms are the last layer of the body sprite
+  }
+  displayArms(ctx){
     var armimage = new Image()
     armimage.src = "/arms.png"
     armimage.onload = () => {
       ctx.drawImage(armimage,0,0)
+      this.displayWeapons(ctx)
     }
-
-    //sword
-    this.displayWeapons(ctx, weaponid)
 
   }
 
+  componentDidMount(){
+    this.drawAvatar();
+  }
+  componentDidUpdate(){
+    this.drawAvatar();
+  }
+  drawAvatar = () => {
+    // initailizes canvas reference
+
+    const canvas = this.refs.canvas
+    const ctx = canvas.getContext("2d")
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+
+    this.displayFeet(ctx)
+    
+  }
+
   render() {
+    
     return (
  
       <div id="avatardiv" className={styles.canvas}>

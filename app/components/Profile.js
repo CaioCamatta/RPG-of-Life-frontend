@@ -17,7 +17,7 @@ export default class Profile extends Component {
               Back
             </Button>
             <h1>Profile</h1>
-            <Avatar />
+            <Avatar helm="" chest="" pants = ""  boots = "" weapon = ""/>
           </Col>
         </Row>
       </Container>
