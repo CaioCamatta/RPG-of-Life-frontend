@@ -115,7 +115,7 @@ export default class Home extends Component {
           </div>
           <div className="mt-1 d-inline-block ml-2">
             <p className="mb-1 font-weight-bold h5">
-              {this.state.profile?.username ?? "Username"}
+              {this.props.globalUsername ?? "Username here"}
             </p>
             <p className="mb-0">XP {this.state.profile?.XP ?? "0"}</p>
             <p className="mb-0">
