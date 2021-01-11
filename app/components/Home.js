@@ -147,7 +147,7 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    this.fetchProfile();
+    this.props.fetchProfile();
     this.populateTasks();
   }
 
@@ -186,82 +186,84 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-        <div className="p-3 profile-header w-100">
-          <div className="pl-2 d-inline-block">
-            <Avatar
-              hat={`/items/${this.state.profile?.hat?.url}`}
-              chest={`/items/${this.state.profile?.chest?.url}`}
-              pants={`/items/${this.state.profile?.pants?.url}`}
-              boots={`/items/${this.state.profile?.boots?.url}`}
-              weapon={`/items/${this.state.profile?.weapon?.url}`}
-            />
-          </div>
-          <div className="mt-1 d-inline-block ml-2">
-            <p className="mb-1 font-weight-bold h5">
-              {this.props.globalUsername ?? "Username"}
-            </p>
-            <p className="mb-0">XP {this.state.profile?.xp ?? "0"}</p>
-            <p className="mb-0">
-              {" "}
-              <FontAwesomeIcon icon={faCoins} className="mr-2" />
-              {this.state.profile?.coins ?? "0"}
-            </p>
-            <p className="mb-0 stats-display">
-              {this.state.profile && (
-                <>
-                  <span className="mr-2">
-                    <FontAwesomeIcon icon={faPlusSquare} />{" "}
-                    {this.state.profile.health}
-                  </span>
-                  <span className="mr-2">
-                    <FontAwesomeIcon icon={faDumbbell} />{" "}
-                    {this.state.profile.strength}
-                  </span>
-                  <span className="mr-2">
-                    <FontAwesomeIcon icon={faBrain} />{" "}
-                    {this.state.profile.intelligence}
-                  </span>
-                  <span className="mr-2">
-                    <FontAwesomeIcon icon={faPalette} />{" "}
-                    {this.state.profile.creativity}
-                  </span>
-                  <span className="mr-2">
-                    <FontAwesomeIcon icon={faHandHoldingHeart} />{" "}
-                    {this.state.profile.charisma}
-                  </span>
-                </>
-              )}
-            </p>
+        <div className="p-0">
+          <div className="py-3 px-3 profile-header w-100 d-flex">
+            <div className="pl-2 d-inline-block">
+              <Avatar
+                hat={`/items/${this.props.profile?.hat?.url}`}
+                chest={`/items/${this.props.profile?.chest?.url}`}
+                pants={`/items/${this.props.profile?.pants?.url}`}
+                boots={`/items/${this.props.profile?.boots?.url}`}
+                weapon={`/items/${this.props.profile?.weapon?.url}`}
+              />
+            </div>
+            <div className="mt-1 d-inline-block ml-2">
+              <p className="mb-1 font-weight-bold h5">
+                {this.props.globalUsername ?? "Username"}
+              </p>
+              <p className="mb-0">XP {this.props.profile?.xp ?? "0"}</p>
+              <p className="mb-0">
+                {" "}
+                <FontAwesomeIcon icon={faCoins} className="mr-2" />
+                {this.props.profile?.coins ?? "0"}
+              </p>
+              <p className="mb-0 stats-display">
+                {this.props.profile && (
+                  <>
+                    <span className="mr-2">
+                      <FontAwesomeIcon icon={faPlusSquare} />{" "}
+                      {this.props.profile.health}
+                    </span>
+                    <span className="mr-2">
+                      <FontAwesomeIcon icon={faDumbbell} />{" "}
+                      {this.props.profile.strength}
+                    </span>
+                    <span className="mr-2">
+                      <FontAwesomeIcon icon={faBrain} />{" "}
+                      {this.props.profile.intelligence}
+                    </span>
+                    <span className="mr-2">
+                      <FontAwesomeIcon icon={faPalette} />{" "}
+                      {this.props.profile.creativity}
+                    </span>
+                    <span className="mr-2">
+                      <FontAwesomeIcon icon={faHandHoldingHeart} />{" "}
+                      {this.props.profile.charisma}
+                    </span>
+                  </>
+                )}
+              </p>
 
-            <div className="align-right mt-1">
-              <Button
-                onClick={() => this.props.navigate(FRIENDS)}
-                outline
-                variant="secondary"
-                className="m-1 px-1 py-0 small"
-              >
-                Friends
-              </Button>
-              <Button
-                onClick={
-                  this.props.SHOP
-                    ? () => this.props.navigateHome()
-                    : () => this.props.navigate(SHOP)
-                }
-                outline
-                variant="secondary"
-                className="m-1 px-1 py-0 small"
-              >
-                {this.props.SHOP ? "Tasks" : "Shop"}
-              </Button>
-              <Button
-                onClick={() => this.props.navigate(PROFILE)}
-                outline
-                variant="secondary"
-                className="m-1 px-1 py-0 small"
-              >
-                Profile
-              </Button>
+              <div className="align-right mt-1">
+                <Button
+                  onClick={() => this.props.navigate(FRIENDS)}
+                  outline
+                  variant="secondary"
+                  className="m-1 px-1 py-0 small"
+                >
+                  Friends
+                </Button>
+                <Button
+                  onClick={
+                    this.props.SHOP
+                      ? () => this.props.navigateHome()
+                      : () => this.props.navigate(SHOP)
+                  }
+                  outline
+                  variant="secondary"
+                  className="m-1 px-1 py-0 small"
+                >
+                  {this.props.SHOP ? "Tasks" : "Shop"}
+                </Button>
+                <Button
+                  onClick={() => this.props.navigate(PROFILE)}
+                  outline
+                  variant="secondary"
+                  className="m-1 px-1 py-0 small"
+                >
+                  Profile
+                </Button>
+              </div>
             </div>
           </div>
         </div>
