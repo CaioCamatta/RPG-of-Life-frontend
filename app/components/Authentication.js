@@ -106,7 +106,7 @@ export default class Authentication extends Component {
         onHide={this.handleSignUpModalToggle}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create a Task</Modal.Title>
+          <Modal.Title>Sign Up</Modal.Title>
         </Modal.Header>
         <div className="p-3">
           <Form onSubmit={this.signup}>

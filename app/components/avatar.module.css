@@ -1,4 +1,13 @@
-.canvas {
-  height: 120px;
-  width: 80px;
+#avatardiv {
+  position: relative;
+  left: 0px;
+}
+
+#avatarcanvas {
+  background-color: #ffffff00;
+  overflow: hidden;
+  padding-top: 10px;
+}
+#avatarcanvas {
+  transform: scale(1.1);
 }
