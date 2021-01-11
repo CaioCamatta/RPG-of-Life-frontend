@@ -92,6 +92,9 @@ export default class MainApp extends Component {
 
     let json = await response.json();
 
+    this.updateProfile(json);
+  };
+
   render() {
     const commonProps = {
       ...this.commonProps,
