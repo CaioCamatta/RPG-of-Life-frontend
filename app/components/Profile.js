@@ -83,10 +83,7 @@ export default class Profile extends Component {
     });
 
     let tasks = await answer.json();
-    let taskList = [];
-    for (let i = 0; i < Object.keys(tasks).length; i++) {
-      taskList.push(tasks[i]);
-    }
+    let taskList = Object.values(tasks);
     if (taskList.length === 0) {
       this.setState({
         taskList: [{ name: "No Tasks Available", statType: "Empty" }],
@@ -117,7 +114,7 @@ export default class Profile extends Component {
               {this.state.taskList.map((task) => (
                 <ListGroup.Item className="task-item">
                   <p>
-                    <FontAwesomeIcon icon={statIcons[task["statType"]]} />{" "}
+                    <FontAwesomeIcon icon={statIcons[task["statType"]]} />
                     {task["name"]}
                   </p>
                 </ListGroup.Item>
