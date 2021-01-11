@@ -15,19 +15,34 @@ export default class Friends extends Component {
     this.state = {
       showChallengeModal: false,
       showAddFriendModal: false,
-      friendsList: [{"friend": "Loading...", "state": "challenge"}]
+      friendsList: [{ friend: "Loading...", state: "challenge" }],
+      userXp: "loading...",
+      otherXp: "loading...",
+      time: "loading...",
+      userGain: "loading...",
+      otherGain: "loading...",
+      userHat: "loading...",
+      userPants: "loading...",
+      userBoots: "loading...",
+      userChest: "loading...",
+      userWeapon: "loading...",
+      friendHat: "loading...",
+      friendPants: "loading...",
+      friendBoots: "loading...",
+      friendChest: "loading...",
+      friendWeapon: "loading...",
     };
   }
 
   componentDidMount() {
-    this.populateFriends()
+    this.populateFriends();
   }
 
   populateFriends = async () => {
     try {
-
       await fetch(
-        "https://rpg-of-life-api.herokuapp.com/checkChallenges/"+this.props.globalUsername,
+        "https://rpg-of-life-api.herokuapp.com/checkChallenges/" +
+          this.props.globalUsername,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -35,9 +50,9 @@ export default class Friends extends Component {
         }
       );
 
-
       let response = await fetch(
-        "https://rpg-of-life-api.herokuapp.com/getFriends/"+this.props.globalUsername,
+        "https://rpg-of-life-api.herokuapp.com/getFriends/" +
+          this.props.globalUsername,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -49,29 +64,27 @@ export default class Friends extends Component {
       friendsList = [];
       for (let i = 0; i < Object.keys(friends).length; i++) {
         friendsList.push({
-          friend: friends[i]['friend'],
-          state: friends[i]['state'],
+          friend: friends[i]["friend"],
+          state: friends[i]["state"],
         });
       }
-      if(friendsList.length != 0){
-        this.setState({friendsList: friendsList})
+      if (friendsList.length != 0) {
+        this.setState({ friendsList: friendsList });
       }
-      
     } catch (error) {
       console.log("Error: ", error);
       return false;
     }
-  }
+  };
 
   handleChallengeModalToggle = async (state, name) => {
     if (state == "challenge") {
       this.setState({
         showChallengeModal: !this.state.showChallengeModal,
         selectedFriend: name,
-        selectedFriendChallengeState: "challenge"
+        selectedFriendChallengeState: "challenge",
       });
-    }
-    else if(state == "accept") {
+    } else if (state == "accept") {
       try {
         let response = await fetch(
           "https://rpg-of-life-api.herokuapp.com/acceptChallenge",
@@ -79,25 +92,34 @@ export default class Friends extends Component {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             mode: "cors",
-            body: JSON.stringify({receiver: this.props.globalUsername, sender: name})
+            body: JSON.stringify({
+              receiver: this.props.globalUsername,
+              sender: name,
+            }),
           }
         );
         this.populateFriends();
-        
       } catch (error) {
         console.log("Error: ", error);
         return false;
       }
-    }
-    else if(state == "view"){
-      this.setState({
-        showChallengeModal: !this.state.showChallengeModal,
-        selectedFriend: name,
-        selectedFriendChallengeState: "view"
-      });
-    }
-    else if(state == "pending"){
-      alert("Please wait until your friend accepts your challenge!")
+    } else if (state == "view") {
+      this.setState(
+        {
+          selectedFriend: name,
+          selectedFriendChallengeState: "view",
+        },
+        async () => {
+          if (name != null) {
+            await this.populateChallenge();
+          }
+          this.setState({
+            showChallengeModal: !this.state.showChallengeModal,
+          });
+        }
+      );
+    } else if (state == "pending") {
+      alert("Please wait until your friend accepts your challenge!");
     }
   };
 
@@ -105,58 +127,162 @@ export default class Friends extends Component {
     //needs to create challenge between two players - fetch to the backend to create a challenge
     //have the challenge available to accept on the other end - in component didMount do a check to see what friends have challenges to accept
     //once accepted have both sides be able to view it - in componentDidMount also
-  
+
     try {
-      console.log(JSON.stringify({sender: this.props.globalUsername, receiver: name}));
+      console.log(
+        JSON.stringify({ sender: this.props.globalUsername, receiver: name })
+      );
       let response = await fetch(
         "https://rpg-of-life-api.herokuapp.com/addChallenge",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           mode: "cors",
-          body: JSON.stringify({sender: this.props.globalUsername, receiver: name})
+          body: JSON.stringify({
+            sender: this.props.globalUsername,
+            receiver: name,
+          }),
         }
       );
       this.populateFriends();
-      
     } catch (error) {
       console.log("Error: ", error);
       return false;
-    } 
+    }
   };
 
   handleSubmitAddFriend = async (evt) => {
     evt.preventDefault();
     try {
-      console.log(JSON.stringify({sender: this.props.globalUsername, receiver: name}));
+      console.log(
+        JSON.stringify({ sender: this.props.globalUsername, receiver: name })
+      );
       let response = await fetch(
         "https://rpg-of-life-api.herokuapp.com/addFriend",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           mode: "cors",
-          body: JSON.stringify({username: this.props.globalUsername, friend: evt.target.name.value})
+          body: JSON.stringify({
+            username: this.props.globalUsername,
+            friend: evt.target.name.value,
+          }),
         }
       );
 
-      let json = await response.json()
-      if(json['message'] != true){
-        alert(json['message'])
-      }
-      else{
-        alert("Friend Successfully added!")
+      let json = await response.json();
+      if (json["message"] != true) {
+        alert(json["message"]);
+      } else {
+        alert("Friend Successfully added!");
       }
 
       this.populateFriends();
-      
     } catch (error) {
       console.log("Error: ", error);
       return false;
-    } 
+    }
   };
 
   handleAddFriendModalToggle = () => {
     this.setState({ showAddFriendModal: !this.state.showAddFriendModal });
+  };
+
+  populateChallenge = async () => {
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getChallenge/" +
+          this.props.globalUsername +
+          "/" +
+          this.state.selectedFriend,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let json = await response.json();
+
+      let plusWeek = new Date(json["start"]);
+      plusWeek.setDate(plusWeek.getDate() + 7);
+
+      let days =
+        (plusWeek.getTime() - new Date(Date.now()).getTime()) /
+        (1000 * 60 * 60 * 24);
+      let floorDays = Math.floor(days);
+      let hours = (
+        (plusWeek.getTime() - new Date(Date.now()).getTime()) /
+          (1000 * 60 * 60) -
+        floorDays * 24
+      ).toFixed(2);
+
+      let userResponse = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getItemsEquipped/" +
+          this.props.globalUsername,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let friendResponse = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getItemsEquipped/" +
+          this.state.selectedFriend,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let friendItems = await friendResponse.json();
+      let userItems = await userResponse.json();
+
+      if (this.state.selectedFriend == json["receiver"]) {
+        this.setState({
+          userXp: json["senderStartXp"],
+          otherXp: json["receiverStartXp"],
+          days: floorDays,
+          hours: hours,
+          userGain: json["senderGains"],
+          otherGain: json["receiverGains"],
+          userHat: userItems["hat"],
+          userPants: userItems["pants"],
+          userBoots: userItems["boots"],
+          userChest: userItems["chest"],
+          userWeapon: userItems["weapon"],
+          friendHat: friendItems["hat"],
+          friendPants: friendItems["pants"],
+          friendBoots: friendItems["boots"],
+          friendChest: friendItems["chest"],
+          friendWeapon: friendItems["weapon"],
+        });
+      } else {
+        this.setState({
+          userXp: json["receiverStartXp"],
+          otherXp: json["senderStartXp"],
+          days: floorDays,
+          hours: hours,
+          userGain: json["receiverGains"],
+          otherGain: json["senderGains"],
+          userHat: userItems["hat"],
+          userPants: userItems["pants"],
+          userBoots: userItems["boots"],
+          userChest: userItems["chest"],
+          userWeapon: userItems["weapon"],
+          friendHat: friendItems["hat"],
+          friendPants: friendItems["pants"],
+          friendBoots: friendItems["boots"],
+          friendChest: friendItems["chest"],
+          friendWeapon: friendItems["weapon"],
+        });
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      return false;
+    }
   };
 
   render() {
@@ -174,9 +300,15 @@ export default class Friends extends Component {
                   <p>{friend.friend}</p>
                   <Button
                     variant="primary"
-                    onClick={() => this.handleChallengeModalToggle(friend.state, friend.friend)}
+                    onClick={() =>
+                      this.handleChallengeModalToggle(
+                        friend.state,
+                        friend.friend
+                      )
+                    }
                   >
-                    { friend.state.charAt(0).toUpperCase() + friend.state.slice(1) }
+                    {friend.state.charAt(0).toUpperCase() +
+                      friend.state.slice(1)}
                   </Button>
                 </ListGroup.Item>
               ))}
@@ -189,15 +321,37 @@ export default class Friends extends Component {
               Add Friend
             </Button>
           </Col>
+
           <ChallengeModal
             show={this.state.showChallengeModal}
-            handleClose={() => this.handleChallengeModalToggle(this.state.selectedFriendChallengeState, null)}
+            handleClose={() =>
+              this.handleChallengeModalToggle(
+                this.state.selectedFriendChallengeState,
+                this.state.selectedFriend
+              )
+            }
             friend={this.state.selectedFriend}
             username={this.props.globalUsername}
             state={this.state.selectedFriendChallengeState}
             handleChallenge={() =>
               this.challengeFriend(this.state.selectedFriend)
             }
+            yourXp={this.state.userXp}
+            yourGains={this.state.userGain}
+            otherXp={this.state.otherXp}
+            otherGains={this.state.otherGain}
+            days={this.state.days}
+            hours={this.state.hours}
+            userHat={this.state.userHat}
+            userChest={this.state.userChest}
+            userBoots={this.state.userBoots}
+            userPants={this.state.userPants}
+            userWeapon={this.state.userWeapon}
+            friendHat={this.state.friendHat}
+            friendChest={this.state.friendChest}
+            friendBoots={this.state.friendBoots}
+            friendPants={this.state.friendPants}
+            friendWeapon={this.state.friendWeapon}
           />
           <AddFriendModal
             show={this.state.showAddFriendModal}

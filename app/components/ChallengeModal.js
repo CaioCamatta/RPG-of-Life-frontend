@@ -1,17 +1,10 @@
 import { Component } from "react";
-import { Modal, Button, Row } from "react-bootstrap";
+import { Modal, Button, Row, Col } from "react-bootstrap";
 import styles from "./challengeModal.module.css";
 
 export default class ChallengeModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userXp: "loading...",
-      otherXp: "loading...",
-      start: "loading...",
-      userGain: "loading...",
-      otherGain: "loading...",
-    };
   }
 
   handleChallengeAndClose = () => {
@@ -21,43 +14,6 @@ export default class ChallengeModal extends Component {
     console.log("done");
   };
 
-  componentDidMount() {
-    this.populateChallenge();
-  }
-
-  populateChallenge = async () => {
-    try{
-      let response = await fetch(
-        "https://rpg-of-life-api.herokuapp.com/getChallenge/" +
-          this.props.username +"/"+this.props.friend,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          mode: "cors",
-        }
-      );
-  
-      let json = await response.json();
-  
-      if(this.props.friend == json['receiver']){
-        this.setState({userXp: json['senderStartXp'],
-        otherXp: json['receiverStartXp'],
-        start: json['start'],
-        userGain: json['senderGains'],
-        otherGain: json['receiverGains'],})
-      }
-      else{
-        this.setState({userXp: json['receiverStartXp'],
-        otherXp: json['senderStartXp'],
-        start: json['start'],
-        userGain: json['receiverGains'],
-        otherGain: json['senderGains'],})
-      }
-    }catch (error) {
-      console.log("Error: ", error);
-      return false;
-    }
-  };
 
   render() {
     if (this.props.state == "view") {
@@ -65,28 +21,29 @@ export default class ChallengeModal extends Component {
         <Modal show={this.props.show} onHide={this.props.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>
-              {this.props.username} VS {this.props.friend}
+              {this.props.username.toUpperCase()} VS {this.props.friend.toUpperCase()}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>START TIME: {this.state.start}</p>
+            <p>Remaining Time: {this.props.days} Days and {this.props.hours} Hours </p>
             <Row className="p-2">
-              <p>
-                {this.props.username} Starting XP: {this.state.userXp}
-              </p>
-              <p>
-              {this.props.friend} Starting XP: {this.state.otherXp}
-              </p>
-            </Row>
-            <Row className="p-2">
-              <p>
-                {this.props.username} Gain in XP: {this.state.userGain}
-              </p>
-              <p>
-              {this.props.friend} Gain in XP: {this.state.otherGain}
-              </p>
-            </Row>
-            
+              <Col>
+                <p>
+                  {this.props.username.toUpperCase()} Starting XP: {this.props.yourXp}
+                </p>
+                <p>
+                  {this.props.username.toUpperCase()} Gain in XP: {this.props.yourGains}
+                </p>
+              </Col>
+              <Col>
+                <p>
+                  {this.props.friend.toUpperCase()} Starting XP: {this.props.otherXp}
+                </p>
+                <p>
+                  {this.props.friend.toUpperCase()} Gain in XP: {this.props.otherGains}
+                </p>
+              </Col> 
+            </Row>           
           </Modal.Body>
         </Modal>
       );
