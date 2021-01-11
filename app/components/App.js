@@ -2,7 +2,6 @@ import { Component } from "react";
 import Authentication from "./Authentication.js";
 import Friends from "./Friends.js";
 import Home from "./Home.js";
-import Shop from "./Shop.js";
 import Profile from "./Profile.js";
 
 import styles from "./app.module.css";
@@ -67,30 +66,61 @@ export default class MainApp extends Component {
     }
   };
 
+  updateProfile = (profile) => {
+    this.setState((state) => {
+      state.profile = {
+        ...state.profile,
+        ...profile,
+      };
+      return state;
+    });
+  };
+
+  fetchProfile = async () => {
+    let response = await fetch(
+      "https://rpg-of-life-api.herokuapp.com/getPlayer/" +
+        this.state.globalUsername,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+      }
+    ).catch((error) => {
+      console.log("Error: ", error);
+      return false;
+    });
+
+    let json = await response.json();
+
+    this.updateProfile(json);
+  };
+
   render() {
+    const commonProps = {
+      ...this.commonProps,
+      profile: this.state?.profile,
+    };
     switch (this.state.pageToShow) {
       case AUTHENTICATION:
         return (
           <Authentication
-            {...this.commonProps}
+            {...commonProps}
             setGlobalUsername={this.setGlobalUsername}
           />
         );
 
       case HOME:
-        return <Home {...this.commonProps} />;
+      case SHOP:
+        return <Home {...commonProps} SHOP={this.state.pageToShow === SHOP} />;
 
       case FRIENDS:
-        return <Friends {...this.commonProps} />;
+        return <Friends {...commonProps} />;
 
       case PROFILE:
-        return <Profile {...this.commonProps} />;
-
-      case SHOP:
-        return <Shop {...this.commonProps} />;
+        return <Profile {...commonProps} />;
 
       default:
-        return <Home {...this.commonProps} />;
+        return <Home {...commonProps} />;
     }
   }
 
@@ -98,5 +128,7 @@ export default class MainApp extends Component {
     navigateHome: this.navigateHome,
     navigate: this.navigate,
     authenticate: this.authenticate,
+    updateProfile: this.updateProfile,
+    fetchProfile: this.fetchProfile,
   };
 }

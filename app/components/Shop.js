@@ -6,6 +6,8 @@ import {
   faCoins,
   faDotCircle,
   faCheckCircle,
+  faToggleOff,
+  faToggleOn,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./shop.module.css";
 import Avatar from "./Avatar";
@@ -22,13 +24,15 @@ function ShopItem({
   equipped,
   showPurchaseModal,
   onClickToEquip,
+  className,
 }) {
   return (
     <div
-      className="shop-item m-2 p-2 border border-secondary"
+      className={`shop-item m-2 p-2 d-flex flex-column ${className}`}
       onClick={
         !purchased ? showPurchaseModal : !equipped ? onClickToEquip : null
       }
+      style={{ width: 65 }}
     >
       <img
         src={`/items/${url}`}
@@ -37,16 +41,16 @@ function ShopItem({
         height={SHOP_ITEM_HEIGHT}
         width={SHOP_ITEM_WIDTH}
       />
-      <p className="mb-1 text-center">
+      <p className="mb-0 text-center">
         {!purchased ? (
           <>
-            <FontAwesomeIcon icon={faCoins} className="mt-1" />
+            <FontAwesomeIcon icon={faCoins} className="mt-1 pr-1" />
             {price}
           </>
         ) : equipped ? (
-          <FontAwesomeIcon icon={faCheckCircle} className="mt-1" />
+          <FontAwesomeIcon icon={faToggleOn} className="mt-1 toggle-on" />
         ) : (
-          <FontAwesomeIcon icon={faDotCircle} type="regular" className="mt-1" />
+          <FontAwesomeIcon icon={faToggleOff} type="regular" className="mt-1 toggle-off" />
         )}
       </p>
     </div>
@@ -155,10 +159,14 @@ export default class Shop extends Component {
 
       console.log("items equipped: ", itemNames);
 
-      this.setState({
-        itemsEquipped: itemNames,
-        ...json,
-      });
+      this.setState(
+        {
+          itemsEquipped: itemNames,
+        },
+        () => {
+          this.props.fetchProfile();
+        }
+      );
     } catch (error) {
       console.log("fetchItemsOwned error: ", error);
     }
@@ -265,23 +273,9 @@ export default class Shop extends Component {
 
   render() {
     return (
-      <Container className="mt-5">
-        <Row>
-          <Col>
-            <Button variant="link" onClick={() => this.props.navigateHome()}>
-              Back
-            </Button>
-            <h1>Shop</h1>
-            <Avatar
-              hat={`/items/${this.state.hat?.url}`}
-              chest={`/items/${this.state.chest?.url}`}
-              pants={`/items/${this.state.pants?.url}`}
-              boots={`/items/${this.state.boots?.url}`}
-              weapon={`/items/${this.state.weapon?.url}`}
-            />
-          </Col>
-        </Row>
-        <Row>
+      <Container className="mt-3">
+        <h3 className="text-center">Shop</h3>
+        <Row className="justify-content-center mx-auto">
           {this.state?.shopItems?.map((item, index) => {
             return (
               <ShopItem
@@ -296,6 +290,7 @@ export default class Shop extends Component {
                   this.togglePurchaseConfirmationModel(item)
                 }
                 onClickToEquip={() => this.onClickToEquip(item.name)}
+                className="flex-grow"
               />
             );
           })}
