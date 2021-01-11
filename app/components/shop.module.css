@@ -1,0 +1,12 @@
+.blacksmith {
+  height: 100px;
+  width: 70px;
+}
+
+.shop-item {
+  background-color: floralwhite;
+  border-radius: 5px;
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}

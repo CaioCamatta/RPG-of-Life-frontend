@@ -61,13 +61,7 @@ export default class Profile extends Component {
     let json = await response.json();
 
     this.setState({
-      xp: json["xp"],
-      coins: json["coins"],
-      health: json["health"],
-      intelligence: json["intelligence"],
-      strength: json["strength"],
-      creativity: json["creativity"],
-      charisma: json["charisma"],
+      ...json
     });
 
     let answer = await fetch(
@@ -105,7 +99,13 @@ export default class Profile extends Component {
               Back
             </Button>
             <h1>{this.props.globalUsername}</h1>
-            <Avatar helm="" chest="" pants = ""  boots = "" weapon = ""/>
+            <Avatar
+              hat={`/items/${this.state.hat?.url}`}
+              chest={`/items/${this.state.chest?.url}`}
+              pants={`/items/${this.state.pants?.url}`}
+              boots={`/items/${this.state.boots?.url}`}
+              weapon={`/items/${this.state.weapon?.url}`}
+            />
             <p>Coins: {this.state.coins}</p>
             <p>XP: {this.state.xp}</p>
             <p>Health: {this.state.health}</p>
