@@ -87,6 +87,9 @@ export default class Shop extends Component {
       console.log("Fetched " + Object.keys(json).length + " shop items.");
 
       let items = Object.values(json);
+      items.sort(function (a, b) {
+        return ("" + b.type).localeCompare(a.type);
+      });
 
       this.setState({
         shopItems: items,
@@ -154,6 +157,7 @@ export default class Shop extends Component {
 
       this.setState({
         itemsEquipped: itemNames,
+        ...json,
       });
     } catch (error) {
       console.log("fetchItemsOwned error: ", error);
@@ -179,11 +183,14 @@ export default class Shop extends Component {
 
       let success = Object.values(json)[0];
 
+      let itemBought = this.state.itemToPurchase.name;
+
       if (success) {
         console.log("Purchased " + this.state.itemToPurchase.name);
 
         this.togglePurchaseConfirmationModel();
         this.fetchItemsOwned();
+        this.onClickToEquip(itemBought);
       }
     } catch (error) {
       console.log("onClickToPurchase error: ", error);
@@ -208,7 +215,6 @@ export default class Shop extends Component {
       let json = await response.json();
 
       let success = Object.values(json);
-      console.log(json);
 
       if (success) {
         console.log("Equipped " + itemName);
@@ -266,14 +272,13 @@ export default class Shop extends Component {
               Back
             </Button>
             <h1>Shop</h1>
-            <div className="blacksmith d-flex">
-              <img
-                src="/blacksmith.png"
-                alt="Blacksmith"
-                className="img-fluid h-100 mx-auto"
-              />
-            </div>
-            <Avatar />
+            <Avatar
+              hat={`/items/${this.state.hat?.url}`}
+              chest={`/items/${this.state.chest?.url}`}
+              pants={`/items/${this.state.pants?.url}`}
+              boots={`/items/${this.state.boots?.url}`}
+              weapon={`/items/${this.state.weapon?.url}`}
+            />
           </Col>
         </Row>
         <Row>
