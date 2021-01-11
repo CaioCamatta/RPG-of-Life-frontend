@@ -100,6 +100,7 @@ export default class MainApp extends Component {
       ...this.commonProps,
       profile: this.state?.profile,
     };
+    
     switch (this.state.pageToShow) {
       case AUTHENTICATION:
         return (
