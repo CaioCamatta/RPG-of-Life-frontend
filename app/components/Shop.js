@@ -155,10 +155,14 @@ export default class Shop extends Component {
 
       console.log("items equipped: ", itemNames);
 
-      this.setState({
-        itemsEquipped: itemNames,
-        ...json,
-      });
+      this.setState(
+        {
+          itemsEquipped: itemNames,
+        },
+        () => {
+          this.props.fetchProfile();
+        }
+      );
     } catch (error) {
       console.log("fetchItemsOwned error: ", error);
     }

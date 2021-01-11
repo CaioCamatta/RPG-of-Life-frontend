@@ -78,31 +78,8 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    this.fetchProfile();
+    this.props.fetchProfile();
   }
-  fetchProfile = async () => {
-    let response = await fetch(
-      "https://rpg-of-life-api.herokuapp.com/getPlayer/" +
-        this.props.globalUsername,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-      }
-    ).catch((error) => {
-      console.log("Error: ", error);
-      return false;
-    });
-
-    let json = await response.json();
-
-    this.setState((state) => {
-      state.profile = {
-        ...json,
-      };
-      return state;
-    });
-  };
 
   handleAddTaskModalToggle = () => {
     this.setState({ showAddTaskModal: !this.state.showAddTaskModal });
@@ -116,45 +93,45 @@ export default class Home extends Component {
             <div className="py-3 px-3 profile-header w-100 d-flex">
               <div className="pl-2 d-inline-block">
                 <Avatar
-                  hat={`/items/${this.state.profile?.hat?.url}`}
-                  chest={`/items/${this.state.profile?.chest?.url}`}
-                  pants={`/items/${this.state.profile?.pants?.url}`}
-                  boots={`/items/${this.state.profile?.boots?.url}`}
-                  weapon={`/items/${this.state.profile?.weapon?.url}`}
+                  hat={`/items/${this.props.profile?.hat?.url}`}
+                  chest={`/items/${this.props.profile?.chest?.url}`}
+                  pants={`/items/${this.props.profile?.pants?.url}`}
+                  boots={`/items/${this.props.profile?.boots?.url}`}
+                  weapon={`/items/${this.props.profile?.weapon?.url}`}
                 />
               </div>
               <div className="mt-1 d-inline-block ml-2">
                 <p className="mb-1 font-weight-bold h5">
                   {this.props.globalUsername ?? "Username"}
                 </p>
-                <p className="mb-0">XP {this.state.profile?.xp ?? "0"}</p>
+                <p className="mb-0">XP {this.props.profile?.xp ?? "0"}</p>
                 <p className="mb-0">
                   {" "}
                   <FontAwesomeIcon icon={faCoins} className="mr-2" />
-                  {this.state.profile?.coins ?? "0"}
+                  {this.props.profile?.coins ?? "0"}
                 </p>
                 <p className="mb-0 stats-display">
-                  {this.state.profile && (
+                  {this.props.profile && (
                     <>
                       <span className="mr-2">
                         <FontAwesomeIcon icon={faPlusSquare} />{" "}
-                        {this.state.profile.health}
+                        {this.props.profile.health}
                       </span>
                       <span className="mr-2">
                         <FontAwesomeIcon icon={faDumbbell} />{" "}
-                        {this.state.profile.strength}
+                        {this.props.profile.strength}
                       </span>
                       <span className="mr-2">
                         <FontAwesomeIcon icon={faBrain} />{" "}
-                        {this.state.profile.intelligence}
+                        {this.props.profile.intelligence}
                       </span>
                       <span className="mr-2">
                         <FontAwesomeIcon icon={faPalette} />{" "}
-                        {this.state.profile.creativity}
+                        {this.props.profile.creativity}
                       </span>
                       <span className="mr-2">
                         <FontAwesomeIcon icon={faHandHoldingHeart} />{" "}
-                        {this.state.profile.charisma}
+                        {this.props.profile.charisma}
                       </span>
                     </>
                   )}
