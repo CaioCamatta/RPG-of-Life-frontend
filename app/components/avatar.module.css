@@ -1,15 +1,13 @@
-.canvas {
-  height: 650px;
-  width: 300px;
-  background-color: #df1818;
-}
-
-#avatardiv{
+#avatardiv {
   position: relative;
-  left:0px;
+  left: 0px;
 }
 
-#avatarcanvas{
-  border-style:solid;
-  background-color: #818df3;
+#avatarcanvas {
+  background-color: #ffffff00;
+  overflow: hidden;
+  padding-top: 10px;
+}
+#avatarcanvas {
+  transform: scale(1.1);
 }
