@@ -265,22 +265,8 @@ export default class Shop extends Component {
 
   render() {
     return (
-      <Container className="mt-5">
-        <Row>
-          <Col>
-            <Button variant="link" onClick={() => this.props.navigateHome()}>
-              Back
-            </Button>
-            <h1>Shop</h1>
-            <Avatar
-              hat={`/items/${this.state.hat?.url}`}
-              chest={`/items/${this.state.chest?.url}`}
-              pants={`/items/${this.state.pants?.url}`}
-              boots={`/items/${this.state.boots?.url}`}
-              weapon={`/items/${this.state.weapon?.url}`}
-            />
-          </Col>
-        </Row>
+      <Container className="mt-3">
+        <h3>Shop</h3>
         <Row>
           {this.state?.shopItems?.map((item, index) => {
             return (

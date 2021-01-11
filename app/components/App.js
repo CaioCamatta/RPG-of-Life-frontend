@@ -2,7 +2,6 @@ import { Component } from "react";
 import Authentication from "./Authentication.js";
 import Friends from "./Friends.js";
 import Home from "./Home.js";
-import Shop from "./Shop.js";
 import Profile from "./Profile.js";
 
 import styles from "./app.module.css";
@@ -78,16 +77,16 @@ export default class MainApp extends Component {
         );
 
       case HOME:
-        return <Home {...this.commonProps} />;
+      case SHOP:
+        return (
+          <Home {...this.commonProps} SHOP={this.state.pageToShow === SHOP} />
+        );
 
       case FRIENDS:
         return <Friends {...this.commonProps} />;
 
       case PROFILE:
         return <Profile {...this.commonProps} />;
-
-      case SHOP:
-        return <Shop {...this.commonProps} />;
 
       default:
         return <Home {...this.commonProps} />;
