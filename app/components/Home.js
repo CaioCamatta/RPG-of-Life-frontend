@@ -12,6 +12,7 @@ import {
   faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import AddTaskModal from "./AddTaskModal";
+import DeleteTaskModal from "./DeleteTaskModal";
 import Shop from "./Shop.js";
 import Avatar from "./Avatar";
 
@@ -33,6 +34,8 @@ export default class Home extends Component {
 
     this.state = {
       showAddTaskModal: false,
+      showDeleteTaskModal: false,
+      taskToDelete: "",
     };
 
     this.state = { taskList : [{"name": "Loading...", "stat": "health", "id": "0"}] };
@@ -71,7 +74,7 @@ export default class Home extends Component {
     }
   }
 
-  handleComplete = async (index) => {
+  handleComplete = async (id) => {
     try {
       let response = await fetch(
         "https://rpg-of-life-api.herokuapp.com/completeTask",
@@ -81,7 +84,7 @@ export default class Home extends Component {
           mode: "cors",
           body: JSON.stringify({
             username: this.props.globalUsername,
-            id: index
+            id: id
           })
         }
       );
@@ -93,7 +96,7 @@ export default class Home extends Component {
     }
   };
 
-  handleDelete = async (index) => {
+  handleSubmitDeleteTask = async (id) => {
     try {
       let response = await fetch(
         "https://rpg-of-life-api.herokuapp.com/deleteTask",
@@ -103,7 +106,7 @@ export default class Home extends Component {
           mode: "cors",
           body: JSON.stringify({
             username: this.props.globalUsername,
-            id: index
+            id: id
           })
         }
       );
@@ -174,6 +177,10 @@ export default class Home extends Component {
 
   handleAddTaskModalToggle = () => {
     this.setState({ showAddTaskModal: !this.state.showAddTaskModal });
+  };
+
+  handleDeleteTaskModalToggle = (id) => {
+    this.setState({ showDeleteTaskModal: !this.state.showDeleteTaskModal, taskToDelete: id });
   };
 
   render() {
@@ -273,7 +280,7 @@ export default class Home extends Component {
                     <p>
                       <Button variant="success" size="sm" className="" onClick={() => this.handleComplete(task.id)}>Complete</Button>
                       {" "}
-                      <Button variant="danger" size="sm" className="" onClick={() => this.handleDelete(task.id)}><FontAwesomeIcon icon={faTrashAlt} /></Button>
+                      <Button variant="danger" size="sm" className="" onClick={() => this.handleDeleteTaskModalToggle(task.id)}><FontAwesomeIcon icon={faTrashAlt} /></Button>
                     </p>
                   </ListGroup.Item>
                 ))}
@@ -289,6 +296,12 @@ export default class Home extends Component {
                 show={this.state.showAddTaskModal}
                 handleClose={this.handleAddTaskModalToggle}
                 handleSubmit={this.handleSubmit}
+              />
+              <DeleteTaskModal
+                show={this.state.showDeleteTaskModal}
+                handleClose={this.handleDeleteTaskModalToggle}
+                handleSubmit={() => this.handleSubmitDeleteTask(this.state.taskToDelete)}
+                taskToDelete={this.state.taskToDelete}
               />
             </div>
           </Container>
