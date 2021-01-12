@@ -145,7 +145,7 @@ export default class Profile extends Component {
               {this.state.taskList.map((task) => (
                 <ListGroup.Item className="task-item">
                   <p>
-                    <FontAwesomeIcon icon={statIcons[task["statType"]]} />
+                    <FontAwesomeIcon icon={statIcons[task["statType"]]} className="mr-2"/>
                     {task["name"]}
                   </p>
                 </ListGroup.Item>

@@ -9,7 +9,7 @@ import {
   faBrain,
   faPalette,
   faHandHoldingHeart,
-  faTrashAlt
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import AddTaskModal from "./AddTaskModal";
 import DeleteTaskModal from "./DeleteTaskModal";
@@ -38,13 +38,16 @@ export default class Home extends Component {
       taskToDelete: "",
     };
 
-    this.state = { taskList : [{"name": "Loading...", "stat": "health", "id": "0"}] };
+    this.state = {
+      taskList: [{ name: "Loading...", stat: "health", id: "0" }],
+    };
   }
 
   populateTasks = async () => {
     try {
       let response = await fetch(
-        "https://rpg-of-life-api.herokuapp.com/getTasks/"+this.props.globalUsername,
+        "https://rpg-of-life-api.herokuapp.com/getTasks/" +
+          this.props.globalUsername,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -53,25 +56,24 @@ export default class Home extends Component {
       );
 
       let tasks = await response.json();
-      console.log("tasks are:", tasks)
+      console.log("tasks are:", tasks);
       taskList = [];
       for (let i = 0; i < Object.values(tasks).length; i++) {
-        if (Object.values(tasks)[i]['completedToday'] == false) {
+        if (Object.values(tasks)[i]["completedToday"] == false) {
           taskList.push({
-            name: Object.values(tasks)[i]['name'],
-            stat: Object.values(tasks)[i]['statType'],
-            id: Object.values(tasks)[i]['id']
+            name: Object.values(tasks)[i]["name"],
+            stat: Object.values(tasks)[i]["statType"],
+            id: Object.values(tasks)[i]["id"],
           });
         }
       }
-      
-      this.setState({taskList: taskList})
-      
+
+      this.setState({ taskList: taskList });
     } catch (error) {
       console.log("Error: ", error);
       return false;
     }
-  }
+  };
 
   handleComplete = async (id) => {
     try {
@@ -83,13 +85,12 @@ export default class Home extends Component {
           mode: "cors",
           body: JSON.stringify({
             username: this.props.globalUsername,
-            id: id
-          })
+            id: id,
+          }),
         }
       );
       this.populateTasks();
       this.props.fetchProfile();
-      
     } catch (error) {
       console.log("Error: ", error);
       return false;
@@ -106,12 +107,11 @@ export default class Home extends Component {
           mode: "cors",
           body: JSON.stringify({
             username: this.props.globalUsername,
-            id: id
-          })
+            id: id,
+          }),
         }
       );
       this.populateTasks();
-      
     } catch (error) {
       console.log("Error: ", error);
       return false;
@@ -129,15 +129,14 @@ export default class Home extends Component {
           headers: { "Content-Type": "application/json" },
           mode: "cors",
           body: JSON.stringify({
-            name: evt.target.name.value, 
+            name: evt.target.name.value,
             statType: evt.target.stat.value.toLowerCase(),
             statVal: 1,
-            username: this.props.globalUsername
-          })
+            username: this.props.globalUsername,
+          }),
         }
       );
       this.populateTasks();
-      
     } catch (error) {
       console.log("Error: ", error);
       return false;
@@ -178,7 +177,10 @@ export default class Home extends Component {
   };
 
   handleDeleteTaskModalToggle = (id) => {
-    this.setState({ showDeleteTaskModal: !this.state.showDeleteTaskModal, taskToDelete: id });
+    this.setState({
+      showDeleteTaskModal: !this.state.showDeleteTaskModal,
+      taskToDelete: id,
+    });
   };
 
   render() {
@@ -199,8 +201,11 @@ export default class Home extends Component {
               <p className="mb-1 font-weight-bold h5">
                 {this.props.globalUsername ?? "Username"}
               </p>
-              <p className="mb-0">XP {this.props.profile?.xp ?? "0"}</p>
-              <p className="mb-0 fa-coins">
+              <p className="mb-1">
+                {this.props.profile?.xp ?? "0"}{" "}
+                <span className="stat-name">XP</span>
+              </p>
+              <p className="mb-1 fa-coins">
                 {" "}
                 <FontAwesomeIcon icon={faCoins} className="mr-2" />
                 {this.props.profile?.coins ?? "0"}
@@ -275,12 +280,27 @@ export default class Home extends Component {
                   <ListGroup.Item className="task-item">
                     <p>
                       <FontAwesomeIcon icon={statIcons[task.stat]} />{" "}
-                      { task.name }
+                      {task.name}
                     </p>
                     <p>
-                      <Button variant="success" size="sm" className="" onClick={() => this.handleComplete(task.id)}>Complete</Button>
-                      {" "}
-                      <Button variant="danger" size="sm" className="" onClick={() => this.handleDeleteTaskModalToggle(task.id)}><FontAwesomeIcon icon={faTrashAlt} /></Button>
+                      <Button
+                        variant="success"
+                        size="sm"
+                        className=""
+                        onClick={() => this.handleComplete(task.id)}
+                      >
+                        Complete
+                      </Button>{" "}
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        className=""
+                        onClick={() =>
+                          this.handleDeleteTaskModalToggle(task.id)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                      </Button>
                     </p>
                   </ListGroup.Item>
                 ))}
@@ -300,7 +320,9 @@ export default class Home extends Component {
               <DeleteTaskModal
                 show={this.state.showDeleteTaskModal}
                 handleClose={this.handleDeleteTaskModalToggle}
-                handleSubmit={() => this.handleSubmitDeleteTask(this.state.taskToDelete)}
+                handleSubmit={() =>
+                  this.handleSubmitDeleteTask(this.state.taskToDelete)
+                }
                 taskToDelete={this.state.taskToDelete}
               />
             </div>
