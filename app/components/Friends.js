@@ -4,10 +4,6 @@ import styles from "./friends.module.css";
 import ChallengeModal from "./ChallengeModal.js";
 import AddFriendModal from "./AddFriendModal";
 
-var friends = ["Person1", "Person2", "Person3"];
-
-var friendsList = [];
-
 export default class Friends extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +27,8 @@ export default class Friends extends Component {
       friendBoots: "loading...",
       friendChest: "loading...",
       friendWeapon: "loading...",
+      showLastChallenge: false,
+      selectedFriend: "loading..."
     };
   }
 
@@ -60,15 +58,44 @@ export default class Friends extends Component {
         }
       );
 
+      let chall = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getChallenges/" +
+          this.props.globalUsername,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let challenges = await chall.json();
       let friends = await response.json();
-      friendsList = [];
+      let friendsWithCompleted = []
+      for(let i = 0; i < Object.keys(challenges).length; i++){
+        if(Object.values(challenges)[i]['completed']){
+          friendsWithCompleted.push(Object.keys(challenges)[i])
+        }
+      }
+     
+      let friendsList = [];
       for (let i = 0; i < Object.keys(friends).length; i++) {
-        friendsList.push({
-          friend: friends[i]["friend"],
-          state: friends[i]["state"],
-        });
+        if(friendsWithCompleted.includes(friends[i]["friend"])){
+          friendsList.push({
+            friend: friends[i]["friend"],
+            state: friends[i]["state"],
+            hasCompletedChallenge: true
+          });
+        }
+        else{
+          friendsList.push({
+            friend: friends[i]["friend"],
+            state: friends[i]["state"],
+            hasCompletedChallenge: false
+          });
+        }
       }
       if (friendsList.length != 0) {
+        console.log(friendsList)
         this.setState({ friendsList: friendsList });
       }
     } catch (error) {
@@ -76,6 +103,23 @@ export default class Friends extends Component {
       return false;
     }
   };
+
+  toggleLastChallenge = async (name) => {
+    console.log(name)
+    this.setState(
+      {
+        selectedFriend: name,
+      },
+      async () => {
+        if (name != null) {
+          await this.populateChallenge();
+        }
+        this.setState({
+          showLastChallenge: !this.state.showLastChallenge,
+        });
+      }
+    );
+  }
 
   handleChallengeModalToggle = async (state, name) => {
     if (state == "challenge") {
@@ -298,6 +342,7 @@ export default class Friends extends Component {
               {this.state.friendsList.map((friend) => (
                 <ListGroup.Item className="friend-card">
                   <p>{friend.friend}</p>
+                  {friend.hasCompletedChallenge ? <Button variant="primary" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button> : null}
                   <Button
                     variant="primary"
                     onClick={() =>
@@ -336,6 +381,33 @@ export default class Friends extends Component {
             handleChallenge={() =>
               this.challengeFriend(this.state.selectedFriend)
             }
+            yourXp={this.state.userXp}
+            yourGains={this.state.userGain}
+            otherXp={this.state.otherXp}
+            otherGains={this.state.otherGain}
+            days={this.state.days}
+            hours={this.state.hours}
+            userHat={this.state.userHat}
+            userChest={this.state.userChest}
+            userBoots={this.state.userBoots}
+            userPants={this.state.userPants}
+            userWeapon={this.state.userWeapon}
+            friendHat={this.state.friendHat}
+            friendChest={this.state.friendChest}
+            friendBoots={this.state.friendBoots}
+            friendPants={this.state.friendPants}
+            friendWeapon={this.state.friendWeapon}
+          />
+          <ChallengeModal
+            show={this.state.showLastChallenge}
+            handleClose={() =>
+              this.toggleLastChallenge(
+                this.state.selectedFriend
+              )
+            }
+            friend={this.state.selectedFriend}
+            username={this.props.globalUsername}
+            state={"lastChallenge"}
             yourXp={this.state.userXp}
             yourGains={this.state.userGain}
             otherXp={this.state.otherXp}

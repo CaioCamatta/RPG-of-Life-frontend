@@ -144,10 +144,28 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
+    
+    this.checkChallenges()
     this.props.fetchProfile();
     this.populateTasks();
   }
 
+  checkChallenges = async () => {
+    try{
+      await fetch(
+        "https://rpg-of-life-api.herokuapp.com/checkChallenges/" +
+          this.props.globalUsername,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+    }catch(error) {
+      console.log("Error: ", error);
+      return false;
+    }
+  }
   fetchProfile = async () => {
     let response = await fetch(
       "https://rpg-of-life-api.herokuapp.com/getPlayer/" +
