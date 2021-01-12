@@ -88,6 +88,7 @@ export default class Home extends Component {
         }
       );
       this.populateTasks();
+      this.props.fetchProfile();
       
     } catch (error) {
       console.log("Error: ", error);
@@ -128,10 +129,9 @@ export default class Home extends Component {
           headers: { "Content-Type": "application/json" },
           mode: "cors",
           body: JSON.stringify({
-            id:"105", 
             name: evt.target.name.value, 
             statType: evt.target.stat.value.toLowerCase(),
-            statVal: "1",
+            statVal: 1,
             completionTime: "",
             username: this.props.globalUsername
           })
