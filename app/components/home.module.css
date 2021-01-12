@@ -28,3 +28,6 @@
 .stats-display{
   font-size: 90%;
 }
+.stat-name {
+  color: #888888;
+}
