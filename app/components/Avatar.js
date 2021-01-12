@@ -9,8 +9,8 @@ class Avatar extends Component {
 
   displayHelmet(ctx) {
     var helmet = new Image();
-    helmet.src = this.props.helm;
-    if (!this.props.helm) {
+    helmet.src = this.props.hat;
+    if (this.props.hat) {
       this.displayArms(ctx);
     }
     helmet.onload = () => {
@@ -21,7 +21,7 @@ class Avatar extends Component {
   displayChest(ctx) {
     var chest = new Image();
     chest.src = this.props.chest;
-    if (!this.props.chest) {
+    if (this.props.chest) {
       this.displayHead(ctx);
     }
     chest.onload = () => {
@@ -32,7 +32,7 @@ class Avatar extends Component {
   displayPants(ctx) {
     var pants = new Image();
     pants.src = this.props.pants;
-    if (!this.props.pants) {
+    if (this.props.pants) {
       this.displayChest(ctx);
     }
     pants.onload = () => {
@@ -43,7 +43,7 @@ class Avatar extends Component {
   displayBoots(ctx) {
     var boots = new Image();
     boots.src = this.props.boots;
-    if (!this.props.boots) {
+    if (this.props.boots) {
       this.displayPants(ctx);
     }
     boots.onload = () => {

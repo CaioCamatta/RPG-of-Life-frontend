@@ -15,13 +15,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 var statIcons = {
-  Health: faHandHoldingHeart,
-  Strength: faDumbbell,
-  Intelligence: faBrain,
-  Creativity: faPalette,
-  Charisma: faPlusSquare,
-  Spinner: faSpinner,
-  Empty: faFolderOpen,
+  health: faHandHoldingHeart,
+  strength: faDumbbell,
+  intelligence: faBrain,
+  creativity: faPalette,
+  charisma: faPlusSquare,
+  spinner: faSpinner,
+  empty: faFolderOpen,
 };
 
 export default class Profile extends Component {
@@ -61,13 +61,7 @@ export default class Profile extends Component {
     let json = await response.json();
 
     this.setState({
-      xp: json["xp"],
-      coins: json["coins"],
-      health: json["health"],
-      intelligence: json["intelligence"],
-      strength: json["strength"],
-      creativity: json["creativity"],
-      charisma: json["charisma"],
+      ...json
     });
 
     let answer = await fetch(
@@ -83,13 +77,10 @@ export default class Profile extends Component {
     });
 
     let tasks = await answer.json();
-    let taskList = [];
-    for (let i = 0; i < Object.keys(tasks).length; i++) {
-      taskList.push(tasks[i]);
-    }
+    let taskList = Object.values(tasks);
     if (taskList.length === 0) {
       this.setState({
-        taskList: [{ name: "No Tasks Available", statType: "Empty" }],
+        taskList: [{ name: "No Tasks Available", statType: "empty" }],
       });
     } else {
       this.setState({ taskList: taskList });
@@ -105,7 +96,13 @@ export default class Profile extends Component {
               Back
             </Button>
             <h1>{this.props.globalUsername}</h1>
-            <Avatar helm="" chest="" pants = ""  boots = "" weapon = ""/>
+            <Avatar
+              hat={`/items/${this.state.hat?.url}`}
+              chest={`/items/${this.state.chest?.url}`}
+              pants={`/items/${this.state.pants?.url}`}
+              boots={`/items/${this.state.boots?.url}`}
+              weapon={`/items/${this.state.weapon?.url}`}
+            />
             <p>Coins: {this.state.coins}</p>
             <p>XP: {this.state.xp}</p>
             <p>Health: {this.state.health}</p>
@@ -117,7 +114,7 @@ export default class Profile extends Component {
               {this.state.taskList.map((task) => (
                 <ListGroup.Item className="task-item">
                   <p>
-                    <FontAwesomeIcon icon={statIcons[task["statType"]]} />{" "}
+                    <FontAwesomeIcon icon={statIcons[task["statType"]]} />
                     {task["name"]}
                   </p>
                 </ListGroup.Item>

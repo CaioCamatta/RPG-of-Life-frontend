@@ -1,0 +1,22 @@
+.blacksmith {
+  height: 100px;
+  width: 70px;
+}
+
+.shop-item {
+  background-color: white;
+  border-radius: 5px;
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #8e6200;
+  box-shadow: 0px 0px 2px 0px #00000093;
+}
+
+.toggle-on {
+  color: #30d158;
+}
+
+.toggle-off {
+  color: #8e8e93;
+}
