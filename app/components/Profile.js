@@ -61,7 +61,7 @@ export default class Profile extends Component {
     let json = await response.json();
 
     this.setState({
-      ...json
+      ...json,
     });
 
     let answer = await fetch(
@@ -89,28 +89,59 @@ export default class Profile extends Component {
 
   render() {
     return (
-      <Container className="mt-5">
-        <Row>
-          <Col>
-            <Button variant="link" onClick={() => this.props.navigateHome()}>
-              Back
-            </Button>
-            <h1>{this.props.globalUsername}</h1>
-            <Avatar
-              hat={`/items/${this.state.hat?.url}`}
-              chest={`/items/${this.state.chest?.url}`}
-              pants={`/items/${this.state.pants?.url}`}
-              boots={`/items/${this.state.boots?.url}`}
-              weapon={`/items/${this.state.weapon?.url}`}
-            />
-            <p>Coins: {this.state.coins}</p>
-            <p>XP: {this.state.xp}</p>
-            <p>Health: {this.state.health}</p>
-            <p>Strength: {this.state.strength}</p>
-            <p>Intelligence: {this.state.intelligence}</p>
-            <p>Charisma: {this.state.charisma}</p>
-            <p>Creativity: {this.state.creativity}</p>
-            <ListGroup>
+      <Container className="mt-4">
+        <Button variant="secondary" onClick={() => this.props.navigateHome()}>
+          Back
+        </Button>
+        <div className="text-center mt-3">
+          <h1>{this.props.globalUsername}</h1>
+
+          <Row>
+            <div className="d-flex mx-auto mb-3 mt-2">
+              <div className=" align-self-center mx-2 -mt-3 avatar-block">
+                <Avatar
+                  hat={`/items/${this.state.hat?.url}`}
+                  chest={`/items/${this.state.chest?.url}`}
+                  pants={`/items/${this.state.pants?.url}`}
+                  boots={`/items/${this.state.boots?.url}`}
+                  weapon={`/items/${this.state.weapon?.url}`}
+                />
+                <p className="mb-2 big fa-coins">
+                  <FontAwesomeIcon icon={faCoins} /> {this.state.coins}{" "}
+                </p>
+                <p className="mb-2 ">
+                  {" "}
+                  {this.state.xp} <span className="small stat-name">XP</span>
+                </p>
+              </div>
+              <div className="mb-3 mx-2 align-self-center">
+                <p className="mb-1">
+                  <FontAwesomeIcon icon={faPlusSquare} /> {this.state.health}{" "}
+                  <span className="small stat-name">Health</span>
+                </p>
+                <p className="mb-1">
+                  <FontAwesomeIcon icon={faDumbbell} /> {this.state.strength}{" "}
+                  <span className="small stat-name">Strength</span>
+                </p>
+                <p className="mb-1">
+                  <FontAwesomeIcon icon={faBrain} /> {this.state.intelligence}{" "}
+                  <span className="small stat-name">Intelligence</span>
+                </p>
+                <p className="mb-1">
+                  <FontAwesomeIcon icon={faHandHoldingHeart} /> {this.state.charisma}{" "}
+                  <span className="small stat-name">Charisma</span>
+                </p>
+                <p className="mb-1">
+                  <FontAwesomeIcon icon={faPalette} />{" "}
+                  {this.state.creativity}{" "}
+                  <span className="small stat-name">Creativity</span>
+                </p>
+              </div>
+            </div>
+          </Row>
+
+          <div className="d-absolute list ">
+            <ListGroup className="">
               {this.state.taskList.map((task) => (
                 <ListGroup.Item className="task-item">
                   <p>
@@ -120,8 +151,8 @@ export default class Profile extends Component {
                 </ListGroup.Item>
               ))}
             </ListGroup>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
     );
   }

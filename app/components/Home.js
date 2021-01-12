@@ -90,7 +90,7 @@ export default class Home extends Component {
       <div>
         <div className="p-0">
           <div className="py-3 px-3 profile-header w-100 d-flex">
-            <div className="pl-2 d-inline-block">
+            <div className="pl-2 d-inline-block align-center">
               <Avatar
                 hat={`/items/${this.props.profile?.hat?.url}`}
                 chest={`/items/${this.props.profile?.chest?.url}`}
@@ -104,7 +104,7 @@ export default class Home extends Component {
                 {this.props.globalUsername ?? "Username"}
               </p>
               <p className="mb-0">XP {this.props.profile?.xp ?? "0"}</p>
-              <p className="mb-0">
+              <p className="mb-0 fa-coins">
                 {" "}
                 <FontAwesomeIcon icon={faCoins} className="mr-2" />
                 {this.props.profile?.coins ?? "0"}
@@ -112,23 +112,23 @@ export default class Home extends Component {
               <p className="mb-0 stats-display">
                 {this.props.profile && (
                   <>
-                    <span className="mr-2">
+                    <span className="mr-2 fa-plus-square">
                       <FontAwesomeIcon icon={faPlusSquare} />{" "}
                       {this.props.profile.health}
                     </span>
-                    <span className="mr-2">
+                    <span className="mr-2 fa-dumbbell">
                       <FontAwesomeIcon icon={faDumbbell} />{" "}
                       {this.props.profile.strength}
                     </span>
-                    <span className="mr-2">
+                    <span className="mr-2 fa-brain">
                       <FontAwesomeIcon icon={faBrain} />{" "}
                       {this.props.profile.intelligence}
                     </span>
-                    <span className="mr-2">
+                    <span className="mr-2 fa-palette">
                       <FontAwesomeIcon icon={faPalette} />{" "}
                       {this.props.profile.creativity}
                     </span>
-                    <span className="mr-2">
+                    <span className="mr-2 fa-hand-holding-heart">
                       <FontAwesomeIcon icon={faHandHoldingHeart} />{" "}
                       {this.props.profile.charisma}
                     </span>

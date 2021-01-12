@@ -1,4 +1,22 @@
 .task-item {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat-name {
+  color: #888888;
+}
+
+.avatar-block {
+  margin-top: -20px;
+}
+
+.list {
+  position: absolute;
+  bottom: 0;
+  overflow-y: scroll;
+  padding: 15px;
+  width: 100%;
+  left: 0;
+  top: 320px;
 }
