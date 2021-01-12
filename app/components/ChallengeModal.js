@@ -47,7 +47,41 @@ export default class ChallengeModal extends Component {
           </Modal.Body>
         </Modal>
       );
-    } else {
+    } 
+    else if(this.props.state == "lastChallenge"){
+      return(
+      <Modal show={this.props.show} onHide={this.props.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <p>CHALLENGE RESULTS</p>
+              {this.props.username.toUpperCase()} VS {this.props.friend.toUpperCase()}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Remaining Time: {this.props.days} Days and {this.props.hours} Hours </p>
+            <Row className="p-2">
+              <Col>
+                <p>
+                  {this.props.username.toUpperCase()} Starting XP: {this.props.yourXp}
+                </p>
+                <p>
+                  {this.props.username.toUpperCase()} Gain in XP: {this.props.yourGains}
+                </p>
+              </Col>
+              <Col>
+                <p>
+                  {this.props.friend.toUpperCase()} Starting XP: {this.props.otherXp}
+                </p>
+                <p>
+                  {this.props.friend.toUpperCase()} Gain in XP: {this.props.otherGains}
+                </p>
+              </Col> 
+            </Row>           
+          </Modal.Body>
+        </Modal>
+      )
+    }
+    else {
       return (
         <Modal show={this.props.show} onHide={this.props.handleClose}>
           <Modal.Header closeButton>
