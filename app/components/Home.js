@@ -19,11 +19,11 @@ import Avatar from "./Avatar";
 import styles from "./home.module.css";
 
 var statIcons = {
-  Health: faPlusSquare,
-  Strength: faDumbbell,
-  Intelligence: faBrain,
-  Creativity: faPalette,
-  Charisma: faHandHoldingHeart,
+  health: faPlusSquare,
+  strength: faDumbbell,
+  intelligence: faBrain,
+  creativity: faPalette,
+  charisma: faHandHoldingHeart,
 };
 
 var taskList = [];
@@ -56,8 +56,7 @@ export default class Home extends Component {
       console.log("tasks are:", tasks)
       taskList = [];
       for (let i = 0; i < Object.values(tasks).length; i++) {
-        console.log(Object.values(tasks)[i]['completionTime']);
-        if (Object.values(tasks)[i]['completionTime'] == "") {
+        if (Object.values(tasks)[i]['completedToday'] == false) {
           taskList.push({
             name: Object.values(tasks)[i]['name'],
             stat: Object.values(tasks)[i]['statType'],
@@ -131,7 +130,7 @@ export default class Home extends Component {
           body: JSON.stringify({
             id:"105", 
             name: evt.target.name.value, 
-            statType: evt.target.stat.value,
+            statType: evt.target.stat.value.toLowerCase(),
             statVal: "1",
             completionTime: "",
             username: this.props.globalUsername
