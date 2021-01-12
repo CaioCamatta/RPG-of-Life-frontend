@@ -9,21 +9,21 @@ import {
   faBrain,
   faPalette,
   faHandHoldingHeart,
+  faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import AddTaskModal from "./AddTaskModal";
+import DeleteTaskModal from "./DeleteTaskModal";
 import Shop from "./Shop.js";
 import Avatar from "./Avatar";
 
 import styles from "./home.module.css";
 
-var tasks = ["Eat Vegetables"];
-
 var statIcons = {
-  Health: "https://img.icons8.com/material-sharp/24/000000/like--v1.png",
-  Strength: "https://img.icons8.com/ios-filled/50/000000/dumbbell.png",
-  Intelligence: "https://img.icons8.com/ios-glyphs/30/000000/open-book--v1.png",
-  Creativity: "https://img.icons8.com/ios-glyphs/24/000000/paint.png",
-  Charisma: "https://img.icons8.com/pastel-glyph/64/000000/groups--v4.png",
+  health: faPlusSquare,
+  strength: faDumbbell,
+  intelligence: faBrain,
+  creativity: faPalette,
+  charisma: faHandHoldingHeart,
 };
 
 var taskList = [];
@@ -34,55 +34,151 @@ export default class Home extends Component {
 
     this.state = {
       showAddTaskModal: false,
+      showDeleteTaskModal: false,
+      taskToDelete: "",
     };
 
-    taskList = [];
-
-    for (let i = 0; i < tasks.length; i++) {
-      taskList.push({
-        name: tasks[i],
-        stat: "Health",
-      });
-    }
-
-    this.state = { taskList };
+    this.state = { taskList : [{"name": "Loading...", "stat": "health", "id": "0"}] };
   }
 
-  handleComplete = (index) => {
-    delete taskList[index];
-    this.setState({ taskList: taskList });
+  populateTasks = async () => {
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/getTasks/"+this.props.globalUsername,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        }
+      );
+
+      let tasks = await response.json();
+      console.log("tasks are:", tasks)
+      taskList = [];
+      for (let i = 0; i < Object.values(tasks).length; i++) {
+        if (Object.values(tasks)[i]['completedToday'] == false) {
+          taskList.push({
+            name: Object.values(tasks)[i]['name'],
+            stat: Object.values(tasks)[i]['statType'],
+            id: Object.values(tasks)[i]['id']
+          });
+        }
+      }
+      
+      this.setState({taskList: taskList})
+      
+    } catch (error) {
+      console.log("Error: ", error);
+      return false;
+    }
+  }
+
+  handleComplete = async (id) => {
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/completeTask",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({
+            username: this.props.globalUsername,
+            id: id
+          })
+        }
+      );
+      this.populateTasks();
+      this.props.fetchProfile();
+      
+    } catch (error) {
+      console.log("Error: ", error);
+      return false;
+    }
   };
 
-  handleSubmit = (evt) => {
-    evt.preventDefault();
-    taskList.push({
-      name: evt.target.name.value,
-      stat: evt.target.stat.value,
-    });
-    this.setState({ taskList: taskList });
-    //making a post request with the fetch API
-    /*fetch('/server', {
-        method: 'POST',
-        headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-        }, 
-        body: JSON.stringify({
-            firstName:this.state.firstName
+  handleSubmitDeleteTask = async (id) => {
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/deleteTask",
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({
+            username: this.props.globalUsername,
+            id: id
           })
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.log(error))
-    });*/
+        }
+      );
+      this.populateTasks();
+      
+    } catch (error) {
+      console.log("Error: ", error);
+      return false;
+    }
+  };
+
+  handleSubmit = async (evt) => {
+    evt.preventDefault();
+
+    try {
+      let response = await fetch(
+        "https://rpg-of-life-api.herokuapp.com/addTask",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({
+            name: evt.target.name.value, 
+            statType: evt.target.stat.value.toLowerCase(),
+            statVal: 1,
+            username: this.props.globalUsername
+          })
+        }
+      );
+      this.populateTasks();
+      
+    } catch (error) {
+      console.log("Error: ", error);
+      return false;
+    }
   };
 
   componentDidMount() {
     this.props.fetchProfile();
+    this.populateTasks();
   }
+
+  fetchProfile = async () => {
+    let response = await fetch(
+      "https://rpg-of-life-api.herokuapp.com/getPlayer/" +
+        this.props.globalUsername,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+      }
+    ).catch((error) => {
+      console.log("Error: ", error);
+      return false;
+    });
+
+    let json = await response.json();
+
+    this.setState((state) => {
+      state.profile = {
+        ...json,
+      };
+      return state;
+    });
+  };
 
   handleAddTaskModalToggle = () => {
     this.setState({ showAddTaskModal: !this.state.showAddTaskModal });
+  };
+
+  handleDeleteTaskModalToggle = (id) => {
+    this.setState({ showDeleteTaskModal: !this.state.showDeleteTaskModal, taskToDelete: id });
   };
 
   render() {
@@ -175,25 +271,17 @@ export default class Home extends Component {
           <Container>
             <div className="scroll-view">
               <ListGroup>
-                {this.state.taskList.map((task, index) => (
+                {this.state.taskList.map((task) => (
                   <ListGroup.Item className="task-item">
                     <p>
-                      <img
-                        width="16"
-                        height="16"
-                        className="mr-2"
-                        src={statIcons[task.stat]}
-                      />
-                      {task.name}
+                      <FontAwesomeIcon icon={statIcons[task.stat]} />{" "}
+                      { task.name }
                     </p>
-                    <Button
-                      variant="success"
-                      size="sm"
-                      className=""
-                      onClick={() => this.handleComplete(index)}
-                    >
-                      Complete
-                    </Button>
+                    <p>
+                      <Button variant="success" size="sm" className="" onClick={() => this.handleComplete(task.id)}>Complete</Button>
+                      {" "}
+                      <Button variant="danger" size="sm" className="" onClick={() => this.handleDeleteTaskModalToggle(task.id)}><FontAwesomeIcon icon={faTrashAlt} /></Button>
+                    </p>
                   </ListGroup.Item>
                 ))}
               </ListGroup>
@@ -208,6 +296,12 @@ export default class Home extends Component {
                 show={this.state.showAddTaskModal}
                 handleClose={this.handleAddTaskModalToggle}
                 handleSubmit={this.handleSubmit}
+              />
+              <DeleteTaskModal
+                show={this.state.showDeleteTaskModal}
+                handleClose={this.handleDeleteTaskModalToggle}
+                handleSubmit={() => this.handleSubmitDeleteTask(this.state.taskToDelete)}
+                taskToDelete={this.state.taskToDelete}
               />
             </div>
           </Container>
