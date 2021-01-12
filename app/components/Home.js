@@ -132,7 +132,6 @@ export default class Home extends Component {
             name: evt.target.name.value, 
             statType: evt.target.stat.value.toLowerCase(),
             statVal: 1,
-            completionTime: "",
             username: this.props.globalUsername
           })
         }
