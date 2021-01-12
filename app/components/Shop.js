@@ -273,7 +273,7 @@ export default class Shop extends Component {
 
   render() {
     return (
-      <Container className="mt-3">
+      <Container className="shop">
         <h3 className="text-center">Shop</h3>
         <Row className="justify-content-center mx-auto">
           {this.state?.shopItems?.map((item, index) => {
