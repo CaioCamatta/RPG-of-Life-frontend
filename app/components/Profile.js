@@ -15,13 +15,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 var statIcons = {
-  Health: faHandHoldingHeart,
-  Strength: faDumbbell,
-  Intelligence: faBrain,
-  Creativity: faPalette,
-  Charisma: faPlusSquare,
-  Spinner: faSpinner,
-  Empty: faFolderOpen,
+  health: faHandHoldingHeart,
+  strength: faDumbbell,
+  intelligence: faBrain,
+  creativity: faPalette,
+  charisma: faPlusSquare,
+  spinner: faSpinner,
+  empty: faFolderOpen,
 };
 
 export default class Profile extends Component {
@@ -80,7 +80,7 @@ export default class Profile extends Component {
     let taskList = Object.values(tasks);
     if (taskList.length === 0) {
       this.setState({
-        taskList: [{ name: "No Tasks Available", statType: "Empty" }],
+        taskList: [{ name: "No Tasks Available", statType: "empty" }],
       });
     } else {
       this.setState({ taskList: taskList });
