@@ -24,7 +24,7 @@
 .shop {
   position: absolute;
   bottom:0;
-  height:75%;
+  top:170px;
   overflow-y: scroll;
   padding:15px;
   width:100%;
