@@ -1,0 +1,96 @@
+h2,h3{
+    padding-top: 2%;
+    text-align: center;
+}
+h1{
+    text-align: center;
+}
+td{
+    text-align: center;
+}
+th{
+    text-align:center;
+    font-size:150%;
+
+}
+p{
+    word-wrap:break-word;
+}
+@font-face{
+    font-family: rpgfont;
+    src:url("/critical-role-play-font/CriticalRolePlay-7BByA.ttf");
+
+}
+body{
+    background-image: linear-gradient(#F17105,#E6C229,#1A8FE3);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family:rpgfont;
+    text-align:justify;
+    font-size:80%;
+}
+
+#icon1{
+    
+    padding-right: 1rem;
+    padding-left:0;
+}
+#icon2{
+    padding-left: 1rem;
+    padding-right:0;
+}
+/*
+#toppart{
+    height:32px;
+    width:32px;
+    background-image: url("/items/crystalhelmet.png");
+    background-repeat: no-repeat;
+}*/
+.makewater{
+    position:absolute;
+    width:20%;
+    opacity:.2;
+    float:none;
+}
+#makewater1{
+  
+    right:10%;
+    top:77%;
+    
+}
+#makewater3{
+    right:10%;
+    bottom: -120%;
+}
+
+#makewater4{
+    position: relative;
+}
+#entry{
+    width:60%;
+    font-size:150%;
+    
+}
+#start{
+    width: 45%;
+    padding-top: 0%;
+    margin:0 auto;
+    display: block;
+    background-color: #F17105;
+}
+#start p{
+    font-size:200%;
+    text-align:center;
+    padding-top:5%;
+
+}
+
+@media only screen and (max-width:343px){
+    #icon1{
+        position: relative;
+        top:-3rem;
+        right:-8rem;
+        margin:0;
+        padding-right:0;
+    }
+}
