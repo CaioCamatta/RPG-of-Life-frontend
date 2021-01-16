@@ -58,7 +58,6 @@ export default class ChallengeModal extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Remaining Time: {this.props.days} Days and {this.props.hours} Hours </p>
             <Row className="p-2">
               <Col>
                 <p>

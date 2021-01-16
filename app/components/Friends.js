@@ -8,6 +8,13 @@ import {
   faPlus
 } from "@fortawesome/free-solid-svg-icons";
 
+var buttonTypes = {
+  "challenge": "primary",
+  "pending": "secondary",
+  "accept": "success",
+  "view": "warning"
+}
+
 export default class Friends extends Component {
   constructor(props) {
     super(props);
@@ -352,10 +359,10 @@ export default class Friends extends Component {
                   <div className="friendNameContainer">
                     <p>{friend.friend}</p>
                   </div>
-                  {friend.hasCompletedChallenge ? <div className="mainButtonContainer"><Button className="btn-secondary mainButton" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button></div> : null}
+                  {friend.hasCompletedChallenge ? <div className="mainButtonContainer"><Button variant="warning" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button></div> : null}
                   <div className="mainButtonContainer">
                     <Button
-                      className="btn-secondary mainButton"
+                      variant={buttonTypes[friend.state]}
                       onClick={() =>
                         this.handleChallengeModalToggle(
                           friend.state,

@@ -24,9 +24,10 @@
     padding-top: 12px;
 }
 
-.mainButton{
+.mainButtonchallenge{
     border: none;
     height: 25pt;
+    background-color: red;
 }
 
 .addButtonContainer{
