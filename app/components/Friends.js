@@ -3,6 +3,10 @@ import { Container, Row, Col, Button, ListGroup } from "react-bootstrap";
 import styles from "./friends.module.css";
 import ChallengeModal from "./ChallengeModal.js";
 import AddFriendModal from "./AddFriendModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlus
+} from "@fortawesome/free-solid-svg-icons";
 
 export default class Friends extends Component {
   constructor(props) {
@@ -95,8 +99,10 @@ export default class Friends extends Component {
         }
       }
       if (friendsList.length != 0) {
-        console.log(friendsList)
         this.setState({ friendsList: friendsList });
+      }
+      else{
+        this.setState({ friendsList: [{ friend: "Add Some Friends!", state: "challenge" }] });
       }
     } catch (error) {
       console.log("Error: ", error);
@@ -331,40 +337,47 @@ export default class Friends extends Component {
 
   render() {
     return (
-      <Container className="mt-5">
+      <Container className="main">
         <Row>
           <Col>
             <Button variant="link" onClick={() => this.props.navigateHome()}>
               Back
             </Button>
-            <h1>Friends</h1>
+            <div className="header">
+              <h1>Friends</h1>
+            </div>
             <ListGroup>
               {this.state.friendsList.map((friend) => (
                 <ListGroup.Item className="friend-card">
-                  <p>{friend.friend}</p>
-                  {friend.hasCompletedChallenge ? <Button variant="primary" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button> : null}
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      this.handleChallengeModalToggle(
-                        friend.state,
-                        friend.friend
-                      )
-                    }
-                  >
-                    {friend.state.charAt(0).toUpperCase() +
-                      friend.state.slice(1)}
-                  </Button>
+                  <div className="friendNameContainer">
+                    <p>{friend.friend}</p>
+                  </div>
+                  {friend.hasCompletedChallenge ? <div className="mainButtonContainer"><Button className="btn-secondary mainButton" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button></div> : null}
+                  <div className="mainButtonContainer">
+                    <Button
+                      className="btn-secondary mainButton"
+                      onClick={() =>
+                        this.handleChallengeModalToggle(
+                          friend.state,
+                          friend.friend
+                        )
+                      }
+                    >
+                      {friend.state.charAt(0).toUpperCase() +
+                        friend.state.slice(1)}
+                    </Button>
+                  </div>
                 </ListGroup.Item>
               ))}
             </ListGroup>
-            <Button
-              variant="primary"
-              onClick={this.handleAddFriendModalToggle}
-              className="m-3 mx-auto"
-            >
-              Add Friend
-            </Button>
+            <div className="addButtonContainer">
+              <Button
+                className="addButton"
+                onClick={this.handleAddFriendModalToggle}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </Button>
+            </div>
           </Col>
 
           <ChallengeModal
