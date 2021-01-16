@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Modal, Button, Row, Col } from "react-bootstrap";
+import { Doughnut } from "react-chartjs-2";
 import styles from "./challengeModal.module.css";
 
 export default class ChallengeModal extends Component {
@@ -43,6 +44,9 @@ export default class ChallengeModal extends Component {
                   {this.props.friend.toUpperCase()} Gain in XP: {this.props.otherGains}
                 </p>
               </Col> 
+            </Row>
+            <Row>
+              <Doughnut data={this.props.graph} options={{ responsive: true }} />
             </Row>           
           </Modal.Body>
         </Modal>
@@ -75,6 +79,9 @@ export default class ChallengeModal extends Component {
                   {this.props.friend.toUpperCase()} Gain in XP: {this.props.otherGains}
                 </p>
               </Col> 
+            </Row>  
+            <Row>
+              <Doughnut data={this.props.graph} options={{ responsive: true }} />
             </Row>           
           </Modal.Body>
         </Modal>

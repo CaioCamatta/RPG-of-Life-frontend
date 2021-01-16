@@ -417,6 +417,19 @@ export default class Friends extends Component {
             friendBoots={this.state.friendBoots}
             friendPants={this.state.friendPants}
             friendWeapon={this.state.friendWeapon}
+            graph={{
+              labels: [this.props.globalUsername.toUpperCase(), this.state.selectedFriend.toUpperCase()],
+              datasets: [
+                {
+                  data: [this.state.userGain, this.state.otherGain],
+                  backgroundColor: ["#F7464A", "#46BFBD"],
+                  hoverBackgroundColor: [
+                    "#FF5A5E",
+                    "#5AD3D1"
+                  ]
+                }
+              ]
+            }}
           />
           <ChallengeModal
             show={this.state.showLastChallenge}
@@ -444,6 +457,19 @@ export default class Friends extends Component {
             friendBoots={this.state.friendBoots}
             friendPants={this.state.friendPants}
             friendWeapon={this.state.friendWeapon}
+            graph={{
+              labels: [this.props.globalUsername.toUpperCase(), this.state.selectedFriend.toUpperCase()],
+              datasets: [
+                {
+                  data: [this.state.userGain, this.state.otherGain],
+                  backgroundColor: ["#F7464A", "#46BFBD"],
+                  hoverBackgroundColor: [
+                    "#FF5A5E",
+                    "#5AD3D1"
+                  ]
+                }
+              ]
+            }}
           />
           <AddFriendModal
             show={this.state.showAddFriendModal}
