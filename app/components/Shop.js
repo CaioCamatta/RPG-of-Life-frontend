@@ -50,7 +50,11 @@ function ShopItem({
         ) : equipped ? (
           <FontAwesomeIcon icon={faToggleOn} className="mt-1 toggle-on" />
         ) : (
-          <FontAwesomeIcon icon={faToggleOff} type="regular" className="mt-1 toggle-off" />
+          <FontAwesomeIcon
+            icon={faToggleOff}
+            type="regular"
+            className="mt-1 toggle-off"
+          />
         )}
       </p>
     </div>
@@ -273,7 +277,14 @@ export default class Shop extends Component {
 
   render() {
     return (
-      <Container className="shop">
+      <Container className="shop pt-1">
+        <Button
+          style={{ marginBottom: -50 }}
+          variant="link"
+          onClick={() => this.props.navigateHome()}
+        >
+          Back
+        </Button>
         <h3 className="text-center">Shop</h3>
         <Row className="justify-content-center mx-auto">
           {this.state?.shopItems?.map((item, index) => {

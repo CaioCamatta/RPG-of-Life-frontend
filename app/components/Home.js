@@ -205,7 +205,7 @@ export default class Home extends Component {
     return (
       <div>
         <div className="p-0">
-          <div className="py-3 px-3 profile-header w-100 d-flex">
+          <div className="py-3 pr-3 pl-1 profile-header w-100 d-flex">
             <div className="pl-2 d-inline-block align-center">
               <Avatar
                 hat={`/items/${this.props.profile?.hat?.url}`}
@@ -274,7 +274,7 @@ export default class Home extends Component {
                   variant="secondary"
                   className="m-1 px-1 py-0 small"
                 >
-                  {this.props.SHOP ? "Tasks" : "Shop"}
+                  Shop
                 </Button>
                 <Button
                   onClick={() => this.props.navigate(PROFILE)}
