@@ -171,8 +171,8 @@ export default class Authentication extends Component {
       <Container className="mt-5">
         <Row>
           <Col>
-            <h1>Authentication</h1>
-            <Form onSubmit={this.login}>
+            <h1 className="text-center mt-5">Authentication</h1>
+            <Form onSubmit={this.login} className="mt-4 px-4">
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
@@ -180,6 +180,7 @@ export default class Authentication extends Component {
                 name="username"
                 value={this.state.username}
                 onChange={this.handleChange}
+                className="mb-2"
               />
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -188,11 +189,16 @@ export default class Authentication extends Component {
                 name="password"
                 value={this.state.password}
                 onChange={this.handleChange}
+                className="mb-2"
               />
               {this.state.loginError && (
                 <p className="text-danger mb-2">{this.state.loginError}</p>
               )}
-              <Button variant="primary" type="submit" className="mt-2">
+              <Button
+                variant="primary"
+                type="submit"
+                className="mt-4 btn-block"
+              >
                 {!this.state.loading ? (
                   "Log In"
                 ) : (
@@ -200,18 +206,19 @@ export default class Authentication extends Component {
                 )}
               </Button>
             </Form>
-            <Button
-              variant="outline-primary"
-              type="submit"
-              className="mt-3"
-              onClick={this.handleSignUpModalToggle}
-            >
-              {!this.state.loading ? (
-                "Sign Up"
-              ) : (
-                <FontAwesomeIcon icon={faSpinner} spin />
-              )}
-            </Button>
+            <div className="mt-4 mx-4">
+              <Button
+                variant="outline-primary btn-block"
+                type="submit"
+                onClick={this.handleSignUpModalToggle}
+              >
+                {!this.state.loading ? (
+                  "Sign Up"
+                ) : (
+                  <FontAwesomeIcon icon={faSpinner} spin />
+                )}
+              </Button>
+            </div>
             {this.renderSignUpModal()}
           </Col>
         </Row>
