@@ -10,9 +10,9 @@ import {
 
 var buttonTypes = {
   "challenge": "primary",
-  "pending": "secondary",
+  "pending": "outline-secondary",
   "accept": "success",
-  "view": "warning"
+  "view": "info"
 }
 
 export default class Friends extends Component {
@@ -28,16 +28,16 @@ export default class Friends extends Component {
       time: "loading...",
       userGain: "loading...",
       otherGain: "loading...",
-      userHat: "loading...",
-      userPants: "loading...",
-      userBoots: "loading...",
-      userChest: "loading...",
-      userWeapon: "loading...",
-      friendHat: "loading...",
-      friendPants: "loading...",
-      friendBoots: "loading...",
-      friendChest: "loading...",
-      friendWeapon: "loading...",
+      userHat: null,
+      userPants: null,
+      userBoots: null,
+      userChest: null,
+      userWeapon: null,
+      friendHat: null,
+      friendPants: null,
+      friendBoots: null,
+      friendChest: null,
+      friendWeapon: null,
       showLastChallenge: false,
       selectedFriend: "loading..."
     };
@@ -296,6 +296,7 @@ export default class Friends extends Component {
 
       let friendItems = await friendResponse.json();
       let userItems = await userResponse.json();
+      console.log(friendItems.hat)
 
       if (this.state.selectedFriend == json["receiver"]) {
         this.setState({
@@ -305,16 +306,16 @@ export default class Friends extends Component {
           hours: hours,
           userGain: json["senderGains"],
           otherGain: json["receiverGains"],
-          userHat: userItems["hat"],
-          userPants: userItems["pants"],
-          userBoots: userItems["boots"],
-          userChest: userItems["chest"],
-          userWeapon: userItems["weapon"],
-          friendHat: friendItems["hat"],
-          friendPants: friendItems["pants"],
-          friendBoots: friendItems["boots"],
-          friendChest: friendItems["chest"],
-          friendWeapon: friendItems["weapon"],
+          userHat: userItems.hat?.url,
+          userPants: userItems.pants?.url,
+          userBoots: userItems.boots?.url,
+          userChest: userItems.chest?.url,
+          userWeapon: userItems.weapon?.url,
+          friendHat: friendItems.hat?.url,
+          friendPants: friendItems.pants?.url,
+          friendBoots: friendItems.boots?.url,
+          friendChest: friendItems.chest?.url,
+          friendWeapon: friendItems.weapon?.url,
         });
       } else {
         this.setState({
@@ -324,16 +325,16 @@ export default class Friends extends Component {
           hours: hours,
           userGain: json["receiverGains"],
           otherGain: json["senderGains"],
-          userHat: userItems["hat"],
-          userPants: userItems["pants"],
-          userBoots: userItems["boots"],
-          userChest: userItems["chest"],
-          userWeapon: userItems["weapon"],
-          friendHat: friendItems["hat"],
-          friendPants: friendItems["pants"],
-          friendBoots: friendItems["boots"],
-          friendChest: friendItems["chest"],
-          friendWeapon: friendItems["weapon"],
+          userHat: userItems.hat?.url,
+          userPants: userItems.pants?.url,
+          userBoots: userItems.boots?.url,
+          userChest: userItems.chest?.url,
+          userWeapon: userItems.weapon?.url,
+          friendHat: friendItems.hat?.url,
+          friendPants: friendItems.pants?.url,
+          friendBoots: friendItems.boots?.url,
+          friendChest: friendItems.chest?.url,
+          friendWeapon: friendItems.weapon?.url,
         });
       }
     } catch (error) {
@@ -379,7 +380,8 @@ export default class Friends extends Component {
             </ListGroup>
             <div className="addButtonContainer">
               <Button
-                className="addButton"
+                variant="light"
+                className="addButton mt-2"
                 onClick={this.handleAddFriendModalToggle}
               >
                 <FontAwesomeIcon icon={faPlus} />
