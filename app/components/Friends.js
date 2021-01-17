@@ -83,7 +83,7 @@ export default class Friends extends Component {
       let friends = await response.json();
       let friendsWithCompleted = []
       for(let i = 0; i < Object.keys(challenges).length; i++){
-        if(Object.values(challenges)[i]['completed']){
+        if(Object.values(challenges)[i]['completed'] && Object.values(challenges)[i]['accepted']){
           friendsWithCompleted.push(Object.keys(challenges)[i])
         }
       }
@@ -181,10 +181,6 @@ export default class Friends extends Component {
   };
 
   challengeFriend = async (name) => {
-    //needs to create challenge between two players - fetch to the backend to create a challenge
-    //have the challenge available to accept on the other end - in component didMount do a check to see what friends have challenges to accept
-    //once accepted have both sides be able to view it - in componentDidMount also
-
     try {
       console.log(
         JSON.stringify({ sender: this.props.globalUsername, receiver: name })
@@ -360,7 +356,7 @@ export default class Friends extends Component {
                   <div className="friendNameContainer">
                     <p>{friend.friend}</p>
                   </div>
-                  {friend.hasCompletedChallenge ? <div className="mainButtonContainer"><Button variant="warning" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button></div> : null}
+                  {friend.hasCompletedChallenge ? <div className="mainButtonContainer"><Button variant="warning" onClick={() => this.toggleLastChallenge(friend.friend)}>Results</Button></div> : null}
                   <div className="mainButtonContainer">
                     <Button
                       variant={buttonTypes[friend.state]}
