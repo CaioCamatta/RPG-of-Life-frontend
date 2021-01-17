@@ -114,7 +114,7 @@ export default class ChallengeModal extends Component {
             </Row>
             <Col className="mt-4">
               <div className="time">
-                <p className="bold">Final Total XP</p>
+                <p className="bold">Final Gains in XP</p>
               </div>
               <Row>
                 <Doughnut
