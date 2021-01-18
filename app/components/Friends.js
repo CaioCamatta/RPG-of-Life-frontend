@@ -3,6 +3,17 @@ import { Container, Row, Col, Button, ListGroup } from "react-bootstrap";
 import styles from "./friends.module.css";
 import ChallengeModal from "./ChallengeModal.js";
 import AddFriendModal from "./AddFriendModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlus
+} from "@fortawesome/free-solid-svg-icons";
+
+var buttonTypes = {
+  "challenge": "primary",
+  "pending": "outline-secondary",
+  "accept": "success",
+  "view": "info"
+}
 
 export default class Friends extends Component {
   constructor(props) {
@@ -17,16 +28,16 @@ export default class Friends extends Component {
       time: "loading...",
       userGain: "loading...",
       otherGain: "loading...",
-      userHat: "loading...",
-      userPants: "loading...",
-      userBoots: "loading...",
-      userChest: "loading...",
-      userWeapon: "loading...",
-      friendHat: "loading...",
-      friendPants: "loading...",
-      friendBoots: "loading...",
-      friendChest: "loading...",
-      friendWeapon: "loading...",
+      userHat: null,
+      userPants: null,
+      userBoots: null,
+      userChest: null,
+      userWeapon: null,
+      friendHat: null,
+      friendPants: null,
+      friendBoots: null,
+      friendChest: null,
+      friendWeapon: null,
       showLastChallenge: false,
       selectedFriend: "loading..."
     };
@@ -72,7 +83,7 @@ export default class Friends extends Component {
       let friends = await response.json();
       let friendsWithCompleted = []
       for(let i = 0; i < Object.keys(challenges).length; i++){
-        if(Object.values(challenges)[i]['completed']){
+        if(Object.values(challenges)[i]['completed'] && Object.values(challenges)[i]['accepted']){
           friendsWithCompleted.push(Object.keys(challenges)[i])
         }
       }
@@ -95,8 +106,10 @@ export default class Friends extends Component {
         }
       }
       if (friendsList.length != 0) {
-        console.log(friendsList)
         this.setState({ friendsList: friendsList });
+      }
+      else{
+        this.setState({ friendsList: [{ friend: "Add Some Friends!", state: "challenge" }] });
       }
     } catch (error) {
       console.log("Error: ", error);
@@ -168,10 +181,6 @@ export default class Friends extends Component {
   };
 
   challengeFriend = async (name) => {
-    //needs to create challenge between two players - fetch to the backend to create a challenge
-    //have the challenge available to accept on the other end - in component didMount do a check to see what friends have challenges to accept
-    //once accepted have both sides be able to view it - in componentDidMount also
-
     try {
       console.log(
         JSON.stringify({ sender: this.props.globalUsername, receiver: name })
@@ -292,16 +301,16 @@ export default class Friends extends Component {
           hours: hours,
           userGain: json["senderGains"],
           otherGain: json["receiverGains"],
-          userHat: userItems["hat"],
-          userPants: userItems["pants"],
-          userBoots: userItems["boots"],
-          userChest: userItems["chest"],
-          userWeapon: userItems["weapon"],
-          friendHat: friendItems["hat"],
-          friendPants: friendItems["pants"],
-          friendBoots: friendItems["boots"],
-          friendChest: friendItems["chest"],
-          friendWeapon: friendItems["weapon"],
+          userHat: userItems.hat?.url,
+          userPants: userItems.pants?.url,
+          userBoots: userItems.boots?.url,
+          userChest: userItems.chest?.url,
+          userWeapon: userItems.weapon?.url,
+          friendHat: friendItems.hat?.url,
+          friendPants: friendItems.pants?.url,
+          friendBoots: friendItems.boots?.url,
+          friendChest: friendItems.chest?.url,
+          friendWeapon: friendItems.weapon?.url,
         });
       } else {
         this.setState({
@@ -311,16 +320,16 @@ export default class Friends extends Component {
           hours: hours,
           userGain: json["receiverGains"],
           otherGain: json["senderGains"],
-          userHat: userItems["hat"],
-          userPants: userItems["pants"],
-          userBoots: userItems["boots"],
-          userChest: userItems["chest"],
-          userWeapon: userItems["weapon"],
-          friendHat: friendItems["hat"],
-          friendPants: friendItems["pants"],
-          friendBoots: friendItems["boots"],
-          friendChest: friendItems["chest"],
-          friendWeapon: friendItems["weapon"],
+          userHat: userItems.hat?.url,
+          userPants: userItems.pants?.url,
+          userBoots: userItems.boots?.url,
+          userChest: userItems.chest?.url,
+          userWeapon: userItems.weapon?.url,
+          friendHat: friendItems.hat?.url,
+          friendPants: friendItems.pants?.url,
+          friendBoots: friendItems.boots?.url,
+          friendChest: friendItems.chest?.url,
+          friendWeapon: friendItems.weapon?.url,
         });
       }
     } catch (error) {
@@ -331,40 +340,48 @@ export default class Friends extends Component {
 
   render() {
     return (
-      <Container className="mt-5">
+      <Container className="main">
         <Row>
           <Col>
             <Button variant="link" onClick={() => this.props.navigateHome()}>
               Back
             </Button>
-            <h1>Friends</h1>
+            <div className="header">
+              <h1>Friends</h1>
+            </div>
             <ListGroup>
               {this.state.friendsList.map((friend) => (
                 <ListGroup.Item className="friend-card">
-                  <p>{friend.friend}</p>
-                  {friend.hasCompletedChallenge ? <Button variant="primary" onClick={() => this.toggleLastChallenge(friend.friend)}>Last Challenge</Button> : null}
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      this.handleChallengeModalToggle(
-                        friend.state,
-                        friend.friend
-                      )
-                    }
-                  >
-                    {friend.state.charAt(0).toUpperCase() +
-                      friend.state.slice(1)}
-                  </Button>
+                  <div className="friendNameContainer">
+                    <p>{friend.friend}</p>
+                  </div>
+                  {friend.hasCompletedChallenge ? <div className="mainButtonContainer"><Button variant="warning" onClick={() => this.toggleLastChallenge(friend.friend)}>Results</Button></div> : null}
+                  <div className="mainButtonContainer">
+                    <Button
+                      variant={buttonTypes[friend.state]}
+                      onClick={() =>
+                        this.handleChallengeModalToggle(
+                          friend.state,
+                          friend.friend
+                        )
+                      }
+                    >
+                      {friend.state.charAt(0).toUpperCase() +
+                        friend.state.slice(1)}
+                    </Button>
+                  </div>
                 </ListGroup.Item>
               ))}
             </ListGroup>
-            <Button
-              variant="primary"
-              onClick={this.handleAddFriendModalToggle}
-              className="m-3 mx-auto"
-            >
-              Add Friend
-            </Button>
+            <div className="addButtonContainer">
+              <Button
+                variant="light"
+                className="addButton mt-2"
+                onClick={this.handleAddFriendModalToggle}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </Button>
+            </div>
           </Col>
 
           <ChallengeModal
@@ -397,6 +414,19 @@ export default class Friends extends Component {
             friendBoots={this.state.friendBoots}
             friendPants={this.state.friendPants}
             friendWeapon={this.state.friendWeapon}
+            graph={{
+              labels: [this.props.globalUsername.toUpperCase(), this.state.selectedFriend.toUpperCase()],
+              datasets: [
+                {
+                  data: [this.state.userGain, this.state.otherGain],
+                  backgroundColor: ["#F7464A", "#46BFBD"],
+                  hoverBackgroundColor: [
+                    "#FF5A5E",
+                    "#5AD3D1"
+                  ]
+                }
+              ]
+            }}
           />
           <ChallengeModal
             show={this.state.showLastChallenge}
@@ -424,6 +454,19 @@ export default class Friends extends Component {
             friendBoots={this.state.friendBoots}
             friendPants={this.state.friendPants}
             friendWeapon={this.state.friendWeapon}
+            graph={{
+              labels: [this.props.globalUsername.toUpperCase(), this.state.selectedFriend.toUpperCase()],
+              datasets: [
+                {
+                  data: [this.state.userGain, this.state.otherGain],
+                  backgroundColor: ["#F7464A", "#46BFBD"],
+                  hoverBackgroundColor: [
+                    "#FF5A5E",
+                    "#5AD3D1"
+                  ]
+                }
+              ]
+            }}
           />
           <AddFriendModal
             show={this.state.showAddFriendModal}
