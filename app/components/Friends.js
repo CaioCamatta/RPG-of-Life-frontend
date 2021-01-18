@@ -292,7 +292,6 @@ export default class Friends extends Component {
 
       let friendItems = await friendResponse.json();
       let userItems = await userResponse.json();
-      console.log(friendItems.hat)
 
       if (this.state.selectedFriend == json["receiver"]) {
         this.setState({
