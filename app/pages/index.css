@@ -1,5 +1,5 @@
 
-@import url("./media.css");
+@import url("media.css");
 
 @font-face{
     font-family:breathefire;
@@ -65,13 +65,7 @@ th{
     padding-left: 1rem;
     padding-right:0;
 }
-/*
-#toppart{
-    height:32px;
-    width:32px;
-    background-image: url("/items/crystalhelmet.png");
-    background-repeat: no-repeat;
-}*/
+
 .makewater{
     position:absolute;
     width:20%;
@@ -141,7 +135,7 @@ th{
 }
 #start{
     width: 45%;
-    padding-top: 0%;
+    padding:0;
     margin:0 auto;
     display: block;
     background-color: #F17105;
@@ -152,6 +146,22 @@ th{
     padding-top:5%;
 
 }
+@media only screen and (max-width:343px){
+    #icon1{
+        position: relative;
+        top:-3rem;
+        right:-8rem;
+        margin:0;
+        padding-right:0;
+    }
 
+    #start{
+        width:100%;
+      
+        padding-left:2rem;
+        padding-right:2rem;
+        
+    }
+}
 
 
