@@ -155,6 +155,11 @@ export default class Profile extends Component {
               </div>
             </div>
           </Row>
+          <div>
+            <p className="mb-4 px-3 small stat-name">
+              {this.state.lore}
+            </p>
+          </div>
 
           <div className="d-absolute list ">
             <ListGroup className="">
