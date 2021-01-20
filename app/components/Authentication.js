@@ -113,7 +113,7 @@ export default class Authentication extends Component {
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="CheeseWhiz74"
+              placeholder="Username"
               name="signUpUsername"
               value={this.state.signUpUsername}
               onChange={this.handleChange}
@@ -176,7 +176,7 @@ export default class Authentication extends Component {
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="CheeseWhiz74 "
+                placeholder="Username"
                 name="username"
                 value={this.state.username}
                 onChange={this.handleChange}

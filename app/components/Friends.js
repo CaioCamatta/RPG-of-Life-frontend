@@ -346,7 +346,7 @@ export default class Friends extends Component {
             <Button variant="link" onClick={() => this.props.navigateHome()}>
               Back
             </Button>
-            <div className="header">
+            <div className="header breathefire rounded">
               <h1>Friends</h1>
             </div>
             <ListGroup>

@@ -1,3 +1,7 @@
+@font-face {
+  font-family: breathefire;
+  src: url("/breathe-fire-font/BreatheFire-65pg.ttf");
+}
 .fa-plus-square {
   color: #ba0808;
 }
@@ -15,4 +19,7 @@
 }
 .fa-coins {
   color: #8e6200;
+}
+.breathefire {
+  font-family: breathefire;
 }

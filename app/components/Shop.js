@@ -279,13 +279,13 @@ export default class Shop extends Component {
     return (
       <Container className="shop pt-1">
         <Button
-          style={{ marginBottom: -50 }}
+          style={{ marginBottom: -40 }}
           variant="link"
           onClick={() => this.props.navigateHome()}
         >
           Back
         </Button>
-        <h3 className="text-center">Shop</h3>
+        <h3 className="text-center breathefire">Shop</h3>
         <Row className="justify-content-center mx-auto">
           {this.state?.shopItems?.map((item, index) => {
             return (

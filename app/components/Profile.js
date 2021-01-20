@@ -110,7 +110,7 @@ export default class Profile extends Component {
           Back
         </Button>
         <div className="text-center mt-3">
-          <h1>{this.props.globalUsername}</h1>
+          <h1 className="breathefire">{this.props.globalUsername}</h1>
 
           <Row>
             <div className="d-flex mx-auto mb-3 mt-2">
