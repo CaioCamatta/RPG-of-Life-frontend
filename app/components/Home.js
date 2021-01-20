@@ -144,14 +144,13 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    
-    this.checkChallenges()
+    this.checkChallenges();
     this.props.fetchProfile();
     this.populateTasks();
   }
 
   checkChallenges = async () => {
-    try{
+    try {
       await fetch(
         "https://rpg-of-life-api.herokuapp.com/checkChallenges/" +
           this.props.globalUsername,
@@ -161,11 +160,11 @@ export default class Home extends Component {
           mode: "cors",
         }
       );
-    }catch(error) {
+    } catch (error) {
       console.log("Error: ", error);
       return false;
     }
-  }
+  };
   fetchProfile = async () => {
     let response = await fetch(
       "https://rpg-of-life-api.herokuapp.com/getPlayer/" +
@@ -257,14 +256,6 @@ export default class Home extends Component {
 
               <div className="align-right mt-1">
                 <Button
-                  onClick={() => this.props.navigate(FRIENDS)}
-                  outline
-                  variant="secondary"
-                  className="m-1 px-1 py-0 small"
-                >
-                  Friends
-                </Button>
-                <Button
                   onClick={
                     this.props.SHOP
                       ? () => this.props.navigateHome()
@@ -275,6 +266,14 @@ export default class Home extends Component {
                   className="m-1 px-1 py-0 small"
                 >
                   Shop
+                </Button>
+                <Button
+                  onClick={() => this.props.navigate(FRIENDS)}
+                  outline
+                  variant="secondary"
+                  className="m-1 px-1 py-0 small"
+                >
+                  Friends
                 </Button>
                 <Button
                   onClick={() => this.props.navigate(PROFILE)}
