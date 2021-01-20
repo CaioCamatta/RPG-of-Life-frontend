@@ -36,6 +36,7 @@ export default class Profile extends Component {
       coins: "...",
       xp: "...",
       taskList: [{ name: "Loading...", statType: "Spinner" }],
+      lore: "..."
     };
   }
 
@@ -85,6 +86,21 @@ export default class Profile extends Component {
     } else {
       this.setState({ taskList: taskList });
     }
+
+    let story = await fetch(
+      "https://rpg-of-life-api.herokuapp.com/getLore/" + username,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+      }
+    ).catch((error) => {
+      console.log("Error: ", error);
+      return false;
+    });
+
+    let lore = await story.json()
+    this.setState({lore: lore['lore']})
   };
 
   render() {
